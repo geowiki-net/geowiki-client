@@ -1,10 +1,11 @@
-# pt-coverage-map
-Interactive map that shows coverage around public transport routes. Uses offline data (includes script for downloading data).
+# geowiki-viewer
+View custom OSM files with a versatile style file in YAML format.
 
 Example: ![Screenshot](./screenshot.png)
 
 ## Installation
 ```sh
+git clone https://github.com/geowiki-net/geowiki-client
 npm install
 cp -r example/ data/ # Modify the style.yaml in data/
 npm start  # start built-in http server (of course, you can use Apache2 too)
