@@ -8,18 +8,45 @@ tileLayers:
   maxZoom: 18
 
 layers:
-- query: way[highway]
+- query: way
   feature:
-    title: Road ({{ tags.highway }})
+    title: "{{ tags.title|default(id) }}"
     style:
-      color: white
-      width: 5
+      color: "{{ tags.color|default('#3388ff') }}"
+      width: "{{ tags.width|default(3) }}"
+      stroke: "{{ tags.stroke|default(1) }}"
+      opacity: "{{ tags.opacity|default(1) }}"
+      offset: "{{ tags.offset|default(0) }}"
+      lineCap: "{{ tags.lineCap|default('round') }}"
+      lineJoin: "{{ tags.lineJoin|default('round') }}"
+      dashArray: "{{ tags.dashArray|default('') }}"
+      dashOffset: "{{ tags.dashOffset|default(0) }}"
+      fill: "{{ tags.fill|default(geometry.type == 'Polygon') }}"
+      fillColor: "{{ tags.fillColor|default(tags.color)|default('#3388ff') }}"
+      fillOpacity: "{{ tags.fillOpacity|default(0.2) }}"
+      fillRule: "{{ tags.fillRule|default('evenodd') }}"
+      smoothFactor: "{{ tags.smoothFactor|default(1) }}"
+      noClip: "{{ tags.noClip|default(0) }}"
+      pane: "{{ tags.pane|default('overlayPane') }}"
 
-- query: |
-    (
-    nwr[leisure=park];
-    nwr[landuse=forest];
-    )
+- query: node
   feature:
+    title: "{{ tags.title|default(id) }}"
     style:
-      fillColor: #007f00
+      color: "{{ tags.color|default('#3388ff') }}"
+      width: "{{ tags.width|default(3) }}"
+      stroke: "{{ tags.stroke|default(1) }}"
+      opacity: "{{ tags.opacity|default(1) }}"
+      offset: "{{ tags.offset|default(0) }}"
+      lineCap: "{{ tags.lineCap|default('round') }}"
+      lineJoin: "{{ tags.lineJoin|default('round') }}"
+      dashArray: "{{ tags.dashArray|default('') }}"
+      dashOffset: "{{ tags.dashOffset|default(0) }}"
+      fill: "{{ tags.fill|default(1) }}"
+      fillColor: "{{ tags.fillColor|default(tags.color)|default('#3388ff') }}"
+      fillOpacity: "{{ tags.fillOpacity|default(0.2) }}"
+      fillRule: "{{ tags.fillRule|default('evenodd') }}"
+      smoothFactor: "{{ tags.smoothFactor|default(1) }}"
+      nodeFeature: "{{ tags.nodeFeature|default('CircleMarker') }}"
+      radius: "{{ tags.radius|default(null) }}"
+      pane: "{{ tags.pane|default('overlayPane') }}"
