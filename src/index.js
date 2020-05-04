@@ -4,11 +4,11 @@ const BoundingBox = require('boundingbox')
 const escapeHtml = require('escape-html')
 const OverpassFrontend = require('overpass-frontend')
 const OverpassLayer = require('overpass-layer')
-const yaml = require('yaml')
+const yaml = require('yaml').default
 const queryString = require('query-string')
 const hash = require('sheet-router/hash')
 
-const routeTypes = require('./routeTypes')
+const routeTypes = require('./routeTypes.json')
 const httpGet = require('./httpGet')
 
 let overpassFrontend
