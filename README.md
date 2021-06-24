@@ -4,6 +4,7 @@ View custom OSM files with a versatile style file in YAML format.
 Example: ![Screenshot](./screenshot.png)
 
 ## Installation
+### As standalone project
 ```sh
 git clone https://github.com/geowiki-net/geowiki-client
 npm install
@@ -13,8 +14,9 @@ npm start  # start built-in http server (of course, you can use Apache2 too)
 
 Browse to http://localhost:8080
 
+## Usage
 ### Alternate .osm file
-You could specify a (modified) OSM file as alternative data soure:
+BY default, geowiki-viewer uses Overpass API for loading data. Alternatively, you could specify a file in OSM format as data soure:
 * http://localhost:8080/?data=filename.osm
 
 This would load `filename.osm` from the data/ directory.

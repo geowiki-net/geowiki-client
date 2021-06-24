@@ -35,7 +35,7 @@ function hashApply (loc) {
 window.onload = function () {
   map = L.map('map', { maxZoom: 22 })
 
-  map.attributionControl.setPrefix('<a target="_blank" href="https://github.com/plepe/pt-coverage-map/">pt-coverage-map</a>')
+  map.attributionControl.setPrefix('<a target="_blank" href="https://github.com/geowiki-net/geowiki-viewer/">geowiki-viewer</a>')
 
   let overpass = '//overpass-api.de/api/interpreter'
   let options = {}
