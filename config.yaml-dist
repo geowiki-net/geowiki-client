@@ -2,3 +2,7 @@
 # for an absolute path or the data-parameter for a file from the
 # data/-directory.
 overpass: '//overpass-api.de/api/interpreter'
+
+# Default Map Location. Can be overridden by the map-parameter with
+# zoom/lat/lon (e.g. map=17/12.345/67.890)
+map: '17/12.345/67.890'

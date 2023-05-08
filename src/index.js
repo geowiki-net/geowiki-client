@@ -14,11 +14,11 @@ const httpGet = require('./httpGet')
 let overpassFrontend
 let map
 let options = {
-  overpass: '//overpass-api.de/api/interpreter'
+  overpass: '//overpass-api.de/api/interpreter',
+  map: '4/0/0'
 }
 
 function hashApply (loc) {
-  console.log(loc)
   let state = queryString.parse(loc)
 
   if ('map' in state) {
@@ -86,6 +86,8 @@ function init (err) {
   })
   if (location.hash) {
     hashApply(location.hash)
+  } else {
+    hashApply('map=' + options.map)
   }
 
   map.on('moveend', () => {
