@@ -8,7 +8,6 @@ const yaml = require('yaml')
 const queryString = require('query-string')
 const hash = require('sheet-router/hash')
 
-const routeTypes = require('./routeTypes.json')
 const httpGet = require('./httpGet')
 
 let overpassFrontend
