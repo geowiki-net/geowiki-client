@@ -14,6 +14,7 @@ const httpGet = require('./httpGet')
 let overpassFrontend
 let map
 let options = {
+  overpass: '//overpass-api.de/api/interpreter'
 }
 
 function hashApply (loc) {
@@ -60,7 +61,6 @@ function init (err) {
 
   map.attributionControl.setPrefix('<a target="_blank" href="https://github.com/geowiki-net/geowiki-viewer/">geowiki-viewer</a>')
 
-  let overpass = '//overpass-api.de/api/interpreter'
   if (window.location.search) {
     _options = queryString.parse(window.location.search)
     for (let k in _options) {
@@ -69,10 +69,10 @@ function init (err) {
   }
 
   if (options.data) {
-    overpass = 'data/' + options.data
+    options.overpass = 'data/' + options.data
   }
 
-  overpassFrontend = new OverpassFrontend(overpass)
+  overpassFrontend = new OverpassFrontend(options.overpass)
   if (options.data) {
     overpassFrontend.on('load', (meta) => {
       if (meta.bounds && typeof map.getZoom() === 'undefined') {
