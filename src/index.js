@@ -13,6 +13,8 @@ const httpGet = require('./httpGet')
 
 let overpassFrontend
 let map
+let options = {
+}
 
 function hashApply (loc) {
   console.log(loc)
@@ -32,15 +34,38 @@ function hashApply (loc) {
   }
 }
 
+function loadConfig (callback) {
+  fetch('config.yaml')
+    .then(req => req.text())
+    .then(body => {
+      let _options = yaml.parse(body)
+
+      for (let k in _options) {
+        options[k] = _options[k]
+      }
+
+      callback(null)
+    })
+    .catch(err => global.setTimeout(() => callback(err), 0))
+}
+
 window.onload = function () {
+  loadConfig(init)
+}
+
+function init (err) {
+  if (err) { console.error(err) }
+
   map = L.map('map', { maxZoom: 22 })
 
   map.attributionControl.setPrefix('<a target="_blank" href="https://github.com/geowiki-net/geowiki-viewer/">geowiki-viewer</a>')
 
   let overpass = '//overpass-api.de/api/interpreter'
-  let options = {}
   if (window.location.search) {
-    options = queryString.parse(window.location.search)
+    _options = queryString.parse(window.location.search)
+    for (let k in _options) {
+      options[k] = _options[k]
+    }
   }
 
   if (options.data) {
