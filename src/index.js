@@ -35,7 +35,13 @@ function hashApply (loc) {
 
 function loadConfig (callback) {
   fetch('config.yaml')
-    .then(req => req.text())
+    .then(req => {
+      if (req.ok) {
+        return req.text()
+      }
+
+      throw(new Error("Can't load file config.yaml: " + req.statusText))
+    })
     .then(body => {
       let _options = yaml.parse(body)
 
@@ -50,7 +56,13 @@ function loadConfig (callback) {
 
 function loadStyle (file, callback) {
   fetch('data/' + file)
-    .then(req => req.text())
+    .then(req => {
+      if (req.ok) {
+        return req.text()
+      }
+
+      throw(new Error("Can't load file data/" + file + ": " + req.statusText))
+    })
     .then(body => {
       let style = yaml.parse(body)
       callback(null, style)
@@ -122,6 +134,8 @@ function init (err) {
   })
 
   loadStyle(options.style, (err, style) => {
+    if (err) { return global.alert(err) }
+
     if (style.tileLayers && style.tileLayers.length === 1) {
       let layer = style.tileLayers[0]
       L.tileLayer(layer.url, layer).addTo(map)
