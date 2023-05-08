@@ -8,8 +8,6 @@ const yaml = require('yaml')
 const queryString = require('query-string')
 const hash = require('sheet-router/hash')
 
-const httpGet = require('./httpGet')
-
 let overpassFrontend
 let map
 let options = {
@@ -46,6 +44,16 @@ function loadConfig (callback) {
       }
 
       callback(null)
+    })
+    .catch(err => global.setTimeout(() => callback(err), 0))
+}
+
+function loadStyle (file, callback) {
+  fetch('data/' + file)
+    .then(req => req.text())
+    .then(body => {
+      let style = yaml.parse(body)
+      callback(null, style)
     })
     .catch(err => global.setTimeout(() => callback(err), 0))
 }
@@ -113,9 +121,7 @@ function init (err) {
     history.replaceState(null, null, '#' + link)
   })
 
-  httpGet('data/' + options.style, {}, (err, content) => {
-    let style = yaml.parse(content.body)
-
+  loadStyle(options.style, (err, style) => {
     if (style.tileLayers && style.tileLayers.length === 1) {
       let layer = style.tileLayers[0]
       L.tileLayer(layer.url, layer).addTo(map)
