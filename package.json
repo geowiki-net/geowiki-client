@@ -10,8 +10,6 @@
     "start": "http-server ./"
   },
   "dependencies": {
-    "boundingbox": "^0.1.2",
-    "escape-html": "^1.0.3",
     "leaflet": "^1.7.1",
     "leaflet-polylinedecorator": "git+https://github.com/plepe/Leaflet.PolylineDecorator.git",
     "leaflet-polylineoffset": "^1.1.1",

@@ -1,7 +1,5 @@
 /* global L:false */
 
-const BoundingBox = require('boundingbox')
-const escapeHtml = require('escape-html')
 const OverpassFrontend = require('overpass-frontend')
 const OverpassLayer = require('overpass-layer')
 const yaml = require('yaml')
