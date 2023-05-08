@@ -32,13 +32,13 @@ function hashApply (loc) {
 }
 
 function loadConfig (callback) {
-  fetch('config.yaml')
+  global.fetch('config.yaml')
     .then(req => {
       if (req.ok) {
         return req.text()
       }
 
-      throw(new Error("Can't load file config.yaml: " + req.statusText))
+      throw (new Error("Can't load file config.yaml: " + req.statusText))
     })
     .then(body => {
       let _options = yaml.parse(body)
@@ -53,13 +53,13 @@ function loadConfig (callback) {
 }
 
 function loadStyle (file, callback) {
-  fetch('data/' + file)
+  global.fetch('data/' + file)
     .then(req => {
       if (req.ok) {
         return req.text()
       }
 
-      throw(new Error("Can't load file data/" + file + ": " + req.statusText))
+      throw (new Error("Can't load file data/" + file + ': ' + req.statusText))
     })
     .then(body => {
       let style = yaml.parse(body)
@@ -80,7 +80,7 @@ function init (err) {
   map.attributionControl.setPrefix('<a target="_blank" href="https://github.com/geowiki-net/geowiki-viewer/">geowiki-viewer</a>')
 
   if (window.location.search) {
-    _options = queryString.parse(window.location.search)
+    let _options = queryString.parse(window.location.search)
     for (let k in _options) {
       options[k] = _options[k]
     }
@@ -102,8 +102,8 @@ function init (err) {
   hash(loc => {
     hashApply(loc.substr(1))
   })
-  if (location.hash) {
-    hashApply(location.hash)
+  if (global.location.hash) {
+    hashApply(global.location.hash)
   } else {
     hashApply('map=' + options.map)
   }
@@ -116,19 +116,19 @@ function init (err) {
     if (zoom) {
       locPrecision =
         zoom > 16 ? 5
-        : zoom > 8 ? 4
-        : zoom > 4 ? 3
-        : zoom > 2 ? 2
-        : zoom > 1 ? 1
-        : 0
+          : zoom > 8 ? 4
+            : zoom > 4 ? 3
+              : zoom > 2 ? 2
+                : zoom > 1 ? 1
+                  : 0
     }
 
-    link = 'map=' +
+    const link = 'map=' +
       zoom + '/' +
       center.lat.toFixed(locPrecision) + '/' +
       center.lng.toFixed(locPrecision)
 
-    history.replaceState(null, null, '#' + link)
+    global.history.replaceState(null, null, '#' + link)
   })
 
   loadStyle(options.style, (err, style) => {
