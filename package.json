@@ -16,8 +16,8 @@
     "leaflet-polylinedecorator": "git+https://github.com/plepe/Leaflet.PolylineDecorator.git",
     "leaflet-polylineoffset": "^1.1.1",
     "leaflet-textpath": "github:makinacorpus/Leaflet.TextPath#leaflet0.8-dev",
-    "overpass-layer": "https://github.com/plepe/overpass-layer#branch-2.7",
-    "overpass-frontend": "^2.4.14",
+    "overpass-frontend": "^3.1.2",
+    "overpass-layer": "^3.4.0",
     "yaml": "^1.9.2"
   },
   "devDependencies": {
@@ -25,12 +25,12 @@
     "argparse": "^1.0.10",
     "browserify": "^16.5.2",
     "esmify": "^2.1.1",
-    "http-server": "^0.12.3",
+    "http-server": "^14.1.1",
     "query-string": "^6.14.1",
     "request": "^2.88.2",
     "sheet-router": "^4.2.3",
     "standard": "^12.0.1",
-    "watchify": "^3.11.0",
+    "watchify": "^4.0.0",
     "xmldom": "^0.6.0"
   },
   "main": "src/index.js",
