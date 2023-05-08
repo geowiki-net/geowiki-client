@@ -15,7 +15,8 @@ let overpassFrontend
 let map
 let options = {
   overpass: '//overpass-api.de/api/interpreter',
-  map: '4/0/0'
+  map: '4/0/0',
+  style: 'style.yaml'
 }
 
 function hashApply (loc) {
@@ -112,10 +113,6 @@ function init (err) {
 
     history.replaceState(null, null, '#' + link)
   })
-
-  if (!options.style) {
-    options.style = 'style.yaml'
-  }
 
   httpGet('data/' + options.style, {}, (err, content) => {
     let style = yaml.parse(content.body)
