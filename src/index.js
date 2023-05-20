@@ -5,12 +5,13 @@ const OverpassLayer = require('overpass-layer')
 const yaml = require('yaml')
 const queryString = require('query-string')
 const hash = require('sheet-router/hash')
+const isRelativePath = require('./isRelativePath')
 
 let overpassFrontend
 let map
 let options = {
   dataDirectory: 'example',
-  overpass: '//overpass-api.de/api/interpreter',
+  data: '//overpass-api.de/api/interpreter',
   map: 'auto',
   style: 'style.yaml'
 }
@@ -58,7 +59,8 @@ function loadConfig (callback) {
 }
 
 function loadStyle (file, callback) {
-  global.fetch(options.dataDirectory + '/' + file)
+  file = isRelativePath(file) ? options.dataDirectory + '/' + file : file
+  global.fetch(file)
     .then(req => {
       if (req.ok) {
         return req.text()
@@ -91,11 +93,11 @@ function init (err) {
     }
   }
 
-  if (options.data) {
-    options.overpass = options.dataDirectory + '/' + options.data
+  if (isRelativePath(options.data)) {
+    options.data = options.dataDirectory + '/' + options.data
   }
 
-  overpassFrontend = new OverpassFrontend(options.overpass)
+  overpassFrontend = new OverpassFrontend(options.data)
   if (overpassFrontend.localOnly) {
     overpassFrontend.on('load', (meta) => {
       if (typeof map.getZoom() === 'undefined') {
