@@ -9,6 +9,7 @@ const hash = require('sheet-router/hash')
 let overpassFrontend
 let map
 let options = {
+  dataDirectory: 'example',
   overpass: '//overpass-api.de/api/interpreter',
   map: '4/0/0',
   style: 'style.yaml'
@@ -53,13 +54,13 @@ function loadConfig (callback) {
 }
 
 function loadStyle (file, callback) {
-  global.fetch('data/' + file)
+  global.fetch(options.dataDirectory + '/' + file)
     .then(req => {
       if (req.ok) {
         return req.text()
       }
 
-      throw (new Error("Can't load file data/" + file + ': ' + req.statusText))
+      throw (new Error("Can't load file " + options.dataDirectory + "/" + file + ': ' + req.statusText))
     })
     .then(body => {
       let style = yaml.parse(body)
@@ -87,7 +88,7 @@ function init (err) {
   }
 
   if (options.data) {
-    options.overpass = 'data/' + options.data
+    options.overpass = options.dataDirectory + '/' + options.data
   }
 
   overpassFrontend = new OverpassFrontend(options.overpass)

@@ -1,3 +1,6 @@
+# Data directory. The directory to load .osm files and style files from.
+dataDirectory: 'example'
+
 # Default address for Overpass API. Can be overridden by the overpass-parameter
 # for an absolute path or the data-parameter for a file from the
 # data/-directory.
