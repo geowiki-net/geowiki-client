@@ -11,14 +11,18 @@ let map
 let options = {
   dataDirectory: 'example',
   overpass: '//overpass-api.de/api/interpreter',
-  map: '4/0/0',
+  map: 'auto',
   style: 'style.yaml'
 }
 
 function hashApply (loc) {
   let state = queryString.parse(loc)
 
-  if ('map' in state) {
+  if (state.map === 'auto' && !overpassFrontend.localOnly) {
+    state.map = '4/0/0'
+  }
+
+  if ('map' in state && state.map !== 'auto') {
     let parts = state.map.split('/')
     state.zoom = parts[0]
     state.lat = parts[1]
@@ -92,10 +96,12 @@ function init (err) {
   }
 
   overpassFrontend = new OverpassFrontend(options.overpass)
-  if (options.data) {
+  if (overpassFrontend.localOnly) {
     overpassFrontend.on('load', (meta) => {
-      if (meta.bounds && typeof map.getZoom() === 'undefined') {
-        map.fitBounds(meta.bounds.toLeaflet())
+      if (typeof map.getZoom() === 'undefined') {
+        if (meta.bounds) {
+          map.fitBounds(meta.bounds.toLeaflet())
+        }
       }
     })
   }
