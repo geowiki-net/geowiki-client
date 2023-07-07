@@ -1,7 +1,7 @@
 /* global L:false */
 
 const OverpassFrontend = require('overpass-frontend')
-const OverpassLayer = require('overpass-layer')
+const LeafletGeowiki = require('leaflet-geowiki/all')
 const yaml = require('yaml')
 const queryString = require('query-string')
 const hash = require('sheet-router/hash')
@@ -11,7 +11,7 @@ let map
 let options = {
   overpass: '//overpass-api.de/api/interpreter',
   map: '4/0/0',
-  style: 'style.yaml'
+  styleFile: 'style.yaml'
 }
 
 function hashApply (loc) {
@@ -49,23 +49,10 @@ function loadConfig (callback) {
 
       callback(null)
     })
-    .catch(err => global.setTimeout(() => callback(err), 0))
-}
-
-function loadStyle (file, callback) {
-  global.fetch('data/' + file)
-    .then(req => {
-      if (req.ok) {
-        return req.text()
-      }
-
-      throw (new Error("Can't load file data/" + file + ': ' + req.statusText))
+    .catch(err => {
+      console.error("Error loading config (" + err.message + "), using default options instead.")
+      global.setTimeout(() => callback(), 0)
     })
-    .then(body => {
-      let style = yaml.parse(body)
-      callback(null, style)
-    })
-    .catch(err => global.setTimeout(() => callback(err), 0))
 }
 
 window.onload = function () {
@@ -131,67 +118,8 @@ function init (err) {
     global.history.replaceState(null, null, '#' + link)
   })
 
-  loadStyle(options.style, (err, style) => {
-    if (err) { return global.alert(err) }
-
-    if (style.tileLayers && style.tileLayers.length === 1) {
-      let layer = style.tileLayers[0]
-      L.tileLayer(layer.url, layer).addTo(map)
-    } else if (style.tileLayers && style.tileLayers.length > 1) {
-      let layers = {}
-      style.tileLayers.forEach((layer, i) => {
-        let l = L.tileLayer(layer.url, layer)
-        layers[layer.title || ('Layer #' + i)] = l
-        if (i === 0) {
-          l.addTo(map)
-        }
-      })
-      L.control.layers(layers).addTo(map)
-    } else {
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        maxZoom: 18
-      }).addTo(map)
-    }
-
-    if (style.panes) {
-      for (const paneId in style.panes) {
-        const pane = map.createPane(paneId)
-        if (style.panes[paneId]) {
-          for (const k in style.panes[paneId]) {
-            pane.style[k] = style.panes[paneId][k]
-          }
-        }
-      }
-    }
-
-    if (!style.layers) {
-      style.layers = []
-    }
-
-    style.layers.forEach(def => {
-      if (!def.feature) {
-        def.feature = {}
-      }
-
-      if (!('markerSymbol' in def.feature)) {
-        def.feature.markerSymbol = ''
-      }
-
-      if (!('title' in def.feature)) {
-        def.feature.title = '{{ tags.name }}'
-      }
-
-      if (!('body' in def.feature)) {
-        def.feature.body = '{{ tags.description }}'
-      }
-
-      new OverpassLayer({
-        overpassFrontend,
-        query: def.query,
-        minZoom: 0,
-        feature: def.feature
-      }).addTo(map)
-    })
-  })
+  const layer = new LeafletGeowiki({
+    overpassFrontend,
+    styleFile: 'data/' + options.styleFile
+  }).addTo(map)
 }
