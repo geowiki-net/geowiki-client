@@ -5,19 +5,25 @@ const LeafletGeowiki = require('leaflet-geowiki/all')
 const yaml = require('yaml')
 const queryString = require('query-string')
 const hash = require('sheet-router/hash')
+const isRelativePath = require('./isRelativePath')
 
 let overpassFrontend
 let map
 let options = {
-  overpass: '//overpass-api.de/api/interpreter',
-  map: '4/0/0',
-  styleFile: 'style.yaml'
+  dataDirectory: 'example',
+  data: '//overpass-api.de/api/interpreter',
+  map: 'auto',
+  style: 'style.yaml'
 }
 
 function hashApply (loc) {
   let state = queryString.parse(loc)
 
-  if ('map' in state) {
+  if (state.map === 'auto' && !overpassFrontend.localOnly) {
+    state.map = '4/0/0'
+  }
+
+  if ('map' in state && state.map !== 'auto') {
     let parts = state.map.split('/')
     state.zoom = parts[0]
     state.lat = parts[1]
@@ -80,15 +86,17 @@ function init (err) {
     }
   }
 
-  if (options.data) {
-    options.overpass = 'data/' + options.data
+  if (isRelativePath(options.data)) {
+    options.data = options.dataDirectory + '/' + options.data
   }
 
-  overpassFrontend = new OverpassFrontend(options.overpass)
-  if (options.data) {
+  overpassFrontend = new OverpassFrontend(options.data)
+  if (overpassFrontend.localOnly) {
     overpassFrontend.on('load', (meta) => {
-      if (meta.bounds && typeof map.getZoom() === 'undefined') {
-        map.fitBounds(meta.bounds.toLeaflet())
+      if (typeof map.getZoom() === 'undefined') {
+        if (meta.bounds) {
+          map.fitBounds(meta.bounds.toLeaflet())
+        }
       }
     })
   }
