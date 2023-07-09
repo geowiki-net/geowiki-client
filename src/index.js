@@ -13,7 +13,7 @@ let options = {
   dataDirectory: 'example',
   data: '//overpass-api.de/api/interpreter',
   map: 'auto',
-  style: 'style.yaml'
+  styleFile: 'style.yaml'
 }
 
 function hashApply (loc) {
@@ -135,6 +135,6 @@ function init (err) {
 
   const layer = new LeafletGeowiki({
     overpassFrontend,
-    styleFile: 'data/' + options.styleFile
+    styleFile: options.dataDirectory + '/' + options.styleFile
   }).addTo(map)
 }
