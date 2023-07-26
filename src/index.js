@@ -110,31 +110,34 @@ function init (err) {
     hashApply('map=' + options.map)
   }
 
-  map.on('moveend', () => {
-    let center = map.getCenter().wrap()
-    let zoom = parseFloat(map.getZoom()).toFixed(0)
-
-    var locPrecision = 5
-    if (zoom) {
-      locPrecision =
-        zoom > 16 ? 5
-          : zoom > 8 ? 4
-            : zoom > 4 ? 3
-              : zoom > 2 ? 2
-                : zoom > 1 ? 1
-                  : 0
-    }
-
-    const link = 'map=' +
-      zoom + '/' +
-      center.lat.toFixed(locPrecision) + '/' +
-      center.lng.toFixed(locPrecision)
-
-    global.history.replaceState(null, null, '#' + link)
-  })
+  map.on('moveend', () => updateLink())
 
   const layer = new LeafletGeowiki({
     overpassFrontend,
     styleFile: options.dataDirectory + '/' + options.styleFile
   }).addTo(map)
+}
+
+function updateLink () {
+  let center = map.getCenter().wrap()
+  let zoom = parseFloat(map.getZoom()).toFixed(0)
+
+  var locPrecision = 5
+  if (zoom) {
+    locPrecision =
+      zoom > 16 ? 5
+        : zoom > 8 ? 4
+          : zoom > 4 ? 3
+            : zoom > 2 ? 2
+              : zoom > 1 ? 1
+                : 0
+  }
+
+  const link = 'map=' +
+    zoom + '/' +
+    center.lat.toFixed(locPrecision) + '/' +
+    center.lng.toFixed(locPrecision) + '&' +
+    'styleFile=' + options.styleFile
+
+  global.history.replaceState(null, null, '#' + link)
 }
