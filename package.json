@@ -3,8 +3,9 @@
   "description": "View custom OSM files with a versatile style file in YAML format.",
   "version": "0.1.0",
   "scripts": {
-    "prepare": "npm run build",
+    "build-translations": "build_dist_node",
     "build": "browserify -p esmify -g browserify-css src/index.js -o dist/map.js",
+    "prepare": "npm run build && npm run build-translations",
     "lint": "standard --fix src/*.js",
     "watch": "watchify -p esmify -g browserify-css -d src/index.js -o dist/map.js -v",
     "start": "http-server ./"
