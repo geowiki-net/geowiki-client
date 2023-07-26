@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "leaflet": "^1.7.1",
-    "leaflet-geowiki": "github:geowiki-net/leaflet-geowiki#osb-category-overpass",
+    "leaflet-geowiki": "github:geowiki-net/leaflet-geowiki#main",
     "leaflet-polylinedecorator": "git+https://github.com/plepe/Leaflet.PolylineDecorator.git",
     "leaflet-polylineoffset": "^1.1.1",
     "leaflet-textpath": "github:makinacorpus/Leaflet.TextPath#leaflet0.8-dev",
