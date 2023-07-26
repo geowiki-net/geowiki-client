@@ -9,6 +9,7 @@ const isRelativePath = require('./isRelativePath')
 
 let overpassFrontend
 let map
+let layer
 let options = {
   dataDirectory: 'example',
   data: '//overpass-api.de/api/interpreter',
@@ -34,6 +35,10 @@ function hashApply (loc) {
     } else {
       map.flyTo({ lat: state.lat, lng: state.lon }, state.zoom)
     }
+  }
+
+  if ('styleFile' in state && state.styleFile !== options.styleFile) {
+    changeLayer(state.styleFile)
   }
 }
 
@@ -112,10 +117,7 @@ function init (err) {
 
   map.on('moveend', () => updateLink())
 
-  const layer = new LeafletGeowiki({
-    overpassFrontend,
-    styleFile: options.dataDirectory + '/' + options.styleFile
-  }).addTo(map)
+  changeLayer(options.styleFile)
 }
 
 function updateLink () {
@@ -140,4 +142,17 @@ function updateLink () {
     'styleFile=' + options.styleFile
 
   global.history.replaceState(null, null, '#' + link)
+}
+
+function changeLayer (styleFile) {
+  if (layer) {
+    map.removeLayer(layer)
+  }
+
+  options.styleFile = styleFile
+
+  layer = new LeafletGeowiki({
+    overpassFrontend,
+    styleFile: options.dataDirectory + '/' + styleFile
+  }).addTo(map)
 }
