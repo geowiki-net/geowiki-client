@@ -6,7 +6,7 @@ Example: ![Screenshot](./screenshot.png)
 ## Installation
 ### As standalone project
 ```sh
-git clone https://github.com/geowiki-net/geowiki-client
+git clone https://github.com/geowiki-net/geowiki-viewer
 npm install
 cp config.yaml-dist config.yaml # You might want to change parameters
 npm start  # start built-in http server (of course, you can use Apache2 too)
@@ -17,19 +17,13 @@ Browse to http://localhost:8080
 ## Usage
 ### Alternate .osm file
 BY default, geowiki-viewer uses Overpass API for loading data. Alternatively, you could specify a file in OSM format as data soure:
-* http://localhost:8080/?data=filename.osm
+* http://localhost:8080/#data=filename.osm
 
 This would load `filename.osm` from the data/ directory.
 
-The following script can help download data from Overpass API to a .osm file:
-```sh
-node get_data --help  # how to modify parameters
-node get_data
-```
-
 ### Alternate style file
 Specify an alternate style file with the style parameter:
-* http://localhost:8080/?style=foobar.yaml
+* http://localhost:8080/#styleFile=foobar.yaml
 
 This would load `foobar.yaml` from the data/ directory.
 
@@ -40,7 +34,7 @@ layers:
   feature:
     title: Road ({{ tags.highway }})
     style:
-      color: white
+      color: black
       width: 5
 
 - query: |
@@ -50,7 +44,7 @@ layers:
     )
   feature:
     style:
-      fillColor: #007f00
+      fillColor: '#007f00'
 ```
 
 ## Additional features
