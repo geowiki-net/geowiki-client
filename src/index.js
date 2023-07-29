@@ -118,7 +118,9 @@ function init (err) {
 
   map.on('moveend', () => updateLink())
 
-  changeLayer(options.styleFile)
+  if (!layer) {
+    changeLayer(options.styleFile)
+  }
 }
 
 function updateLink () {
