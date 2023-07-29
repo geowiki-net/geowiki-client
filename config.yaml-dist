@@ -15,5 +15,9 @@ map: 'auto'
 # To use a specific map location
 #'17/12.345/67.890'
 
+# Max zoom level of the map (the background tiles will be scaled, if it is
+# higher than the max. native zoom)
+maxZoom: 20
+
 # Default style file to load (from the data/-directory)
 styleFile: style.yaml

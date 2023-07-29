@@ -14,6 +14,7 @@ let options = {
   dataDirectory: 'example',
   data: '//overpass-api.de/api/interpreter',
   map: 'auto',
+  maxZoom: 20,
   styleFile: 'style.yaml'
 }
 
@@ -73,12 +74,12 @@ window.onload = function () {
 function init (err) {
   if (err) { console.error(err) }
 
-  map = L.map('map', { maxZoom: 22 })
+  map = L.map('map', { maxZoom: options.maxZoom })
 
   // Show OSM map background
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxNativeZoom: 19,
-    maxZoom: 22,
+    maxZoom: options.maxZoom,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }).addTo(map)
 
