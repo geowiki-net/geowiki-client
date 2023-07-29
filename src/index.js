@@ -149,7 +149,7 @@ function updateLink () {
 
 function changeLayer (styleFile) {
   if (layer) {
-    map.removeLayer(layer)
+    layer.remove()
   }
 
   options.styleFile = styleFile
