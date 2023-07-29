@@ -61,7 +61,7 @@ function loadConfig (callback) {
       callback(null)
     })
     .catch(err => {
-      console.error("Error loading config (" + err.message + "), using default options instead.")
+      console.error('Error loading config (' + err.message + '), using default options instead.')
       global.setTimeout(() => callback(), 0)
     })
 }
@@ -77,10 +77,10 @@ function init (err) {
 
   // Show OSM map background
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxNativeZoom: 19,
-      maxZoom: 22,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-  }).addTo(map);
+    maxNativeZoom: 19,
+    maxZoom: 22,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map)
 
   map.attributionControl.setPrefix('<a target="_blank" href="https://github.com/geowiki-net/geowiki-viewer/">geowiki-viewer</a>')
 
