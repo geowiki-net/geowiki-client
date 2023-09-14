@@ -10,12 +10,15 @@ const isRelativePath = require('./isRelativePath')
 let overpassFrontend
 let map
 let layer
-let options = {
+// the config which has been defined here or in config.yaml
+let config = {
   dataDirectory: 'example',
   data: '//overpass-api.de/api/interpreter',
   map: 'auto',
   styleFile: 'style.yaml'
 }
+// the current options as modified by url parameters
+let options = { ...config }
 
 function hashApply (loc) {
   let state = queryString.parse(loc)
@@ -52,13 +55,11 @@ function loadConfig (callback) {
       throw (new Error("Can't load file config.yaml: " + req.statusText))
     })
     .then(body => {
-      let _options = yaml.parse(body)
+      const _config = yaml.parse(body)
+      config = { ...config, ..._config }
+      options = { ...config }
 
-      for (let k in _options) {
-        options[k] = _options[k]
-      }
-
-      callback(null)
+      global.setTimeout(() => callback(null), 0)
     })
     .catch(err => {
       console.error("Error loading config (" + err.message + "), using default options instead.")
