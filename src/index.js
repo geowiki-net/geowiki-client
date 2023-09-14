@@ -32,21 +32,27 @@ function hashApply (loc) {
     state.zoom = parts[0]
     state.lat = parts[1]
     state.lon = parts[2]
-
-    if (typeof map.getZoom() === 'undefined') {
-      map.setView({ lat: state.lat, lng: state.lon }, state.zoom)
-    } else {
-      map.flyTo({ lat: state.lat, lng: state.lon }, state.zoom)
-    }
   }
 
-  if ('styleFile' in state && state.styleFile !== options.styleFile) {
+  applyState({ ...options, ...state })
+}
+
+function applyState (state) {
+  if (typeof map.getZoom() === 'undefined') {
+    map.setView({ lat: state.lat, lng: state.lon }, state.zoom)
+  } else {
+    map.flyTo({ lat: state.lat, lng: state.lon }, state.zoom)
+  }
+
+  if (!overpassFrontend || state.data !== options.data) {
+    loadData(state.data)
+  }
+
+  if (!layer || state.styleFile !== options.styleFile) {
     changeLayer(state.styleFile)
   }
 
-  if ('data' in state && state.data !== options.data) {
-    loadData(state.data)
-  }
+  updateLink()
 }
 
 function loadConfig (callback) {
@@ -96,8 +102,6 @@ function init (err) {
     }
   }
 
-  loadData(options.data)
-
   hash(loc => {
     hashApply(loc.substr(1))
   })
@@ -108,12 +112,11 @@ function init (err) {
   }
 
   map.on('moveend', () => updateLink())
-
-  changeLayer(options.styleFile)
 }
 
 function loadData (path) {
   options.data = path
+  options.styleFile = null
 
   if (isRelativePath(path)) {
     path = options.dataDirectory + '/' + path
@@ -129,8 +132,6 @@ function loadData (path) {
       }
     })
   }
-
-  changeLayer(options.styleFile)
 }
 
 function updateLink () {
