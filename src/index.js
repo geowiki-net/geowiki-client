@@ -139,11 +139,17 @@ function updateLink () {
                 : 0
   }
 
-  const link = 'map=' +
-    zoom + '/' +
+  const state = {}
+
+  state.map = zoom + '/' +
     center.lat.toFixed(locPrecision) + '/' +
-    center.lng.toFixed(locPrecision) + '&' +
-    'styleFile=' + options.styleFile
+    center.lng.toFixed(locPrecision)
+  state.styleFile = options.styleFile
+
+  const link = queryString.stringify(state)
+    .replace(/%2F/g, '/')
+    .replace(/%2C/g, ',')
+    // Characters we dont's want escaped
 
   global.history.replaceState(null, null, '#' + link)
 }
