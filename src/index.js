@@ -131,7 +131,6 @@ function loadData (path) {
   }
 
   changeLayer(options.styleFile)
-  updateLink()
 }
 
 function updateLink () {
