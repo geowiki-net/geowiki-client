@@ -91,20 +91,7 @@ function init (err) {
     }
   }
 
-  if (isRelativePath(options.data)) {
-    options.data = options.dataDirectory + '/' + options.data
-  }
-
-  overpassFrontend = new OverpassFrontend(options.data)
-  if (overpassFrontend.localOnly) {
-    overpassFrontend.on('load', (meta) => {
-      if (typeof map.getZoom() === 'undefined') {
-        if (meta.bounds) {
-          map.fitBounds(meta.bounds.toLeaflet())
-        }
-      }
-    })
-  }
+  loadData(options.data)
 
   hash(loc => {
     hashApply(loc.substr(1))
@@ -118,6 +105,23 @@ function init (err) {
   map.on('moveend', () => updateLink())
 
   changeLayer(options.styleFile)
+}
+
+function loadData (path) {
+  if (isRelativePath(path)) {
+    path = options.dataDirectory + '/' + path
+  }
+
+  overpassFrontend = new OverpassFrontend(path)
+  if (overpassFrontend.localOnly) {
+    overpassFrontend.on('load', (meta) => {
+      if (typeof map.getZoom() === 'undefined') {
+        if (meta.bounds) {
+          map.fitBounds(meta.bounds.toLeaflet())
+        }
+      }
+    })
+  }
 }
 
 function updateLink () {
