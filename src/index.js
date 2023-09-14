@@ -126,25 +126,29 @@ function loadData (path) {
 }
 
 function updateLink () {
-  let center = map.getCenter().wrap()
-  let zoom = parseFloat(map.getZoom()).toFixed(0)
-
-  var locPrecision = 5
-  if (zoom) {
-    locPrecision =
-      zoom > 16 ? 5
-        : zoom > 8 ? 4
-          : zoom > 4 ? 3
-            : zoom > 2 ? 2
-              : zoom > 1 ? 1
-                : 0
-  }
-
   const state = {}
 
-  state.map = zoom + '/' +
-    center.lat.toFixed(locPrecision) + '/' +
-    center.lng.toFixed(locPrecision)
+  let zoom = map.getZoom()
+  if (typeof zoom !== 'undefined') {
+    let center = map.getCenter().wrap()
+    let zoom = parseFloat(map.getZoom()).toFixed(0)
+
+    var locPrecision = 5
+    if (zoom) {
+      locPrecision =
+        zoom > 16 ? 5
+          : zoom > 8 ? 4
+            : zoom > 4 ? 3
+              : zoom > 2 ? 2
+                : zoom > 1 ? 1
+                  : 0
+    }
+
+    state.map = zoom + '/' +
+      center.lat.toFixed(locPrecision) + '/' +
+      center.lng.toFixed(locPrecision)
+  }
+
   state.styleFile = options.styleFile
 
   const link = queryString.stringify(state)
