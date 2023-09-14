@@ -43,6 +43,10 @@ function hashApply (loc) {
   if ('styleFile' in state && state.styleFile !== options.styleFile) {
     changeLayer(state.styleFile)
   }
+
+  if ('data' in state && state.data !== options.data) {
+    loadData(state.data)
+  }
 }
 
 function loadConfig (callback) {
@@ -109,6 +113,8 @@ function init (err) {
 }
 
 function loadData (path) {
+  options.data = path
+
   if (isRelativePath(path)) {
     path = options.dataDirectory + '/' + path
   }
@@ -123,6 +129,9 @@ function loadData (path) {
       }
     })
   }
+
+  changeLayer(options.styleFile)
+  updateLink()
 }
 
 function updateLink () {
@@ -150,6 +159,10 @@ function updateLink () {
   }
 
   state.styleFile = options.styleFile
+
+  if (options.data !== config.data) {
+    state.data = options.data
+  }
 
   const link = queryString.stringify(state)
     .replace(/%2F/g, '/')
