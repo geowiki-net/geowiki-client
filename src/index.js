@@ -6,6 +6,7 @@ const yaml = require('yaml')
 const queryString = require('query-string')
 const hash = require('sheet-router/hash')
 const isRelativePath = require('./isRelativePath')
+const state = require('./state')
 
 let overpassFrontend
 let map
@@ -22,40 +23,27 @@ let config = {
 let options = { ...config }
 
 function hashApply (loc) {
-  let state = queryString.parse(loc)
-
-  if (state.map === 'auto' && (overpassFrontend && !overpassFrontend.localOnly)) {
-    state.map = '4/0/0'
-  }
-
-  if ('map' in state && state.map !== 'auto') {
-    let parts = state.map.split('/')
-    state.zoom = parts[0]
-    state.lat = parts[1]
-    state.lon = parts[2]
-  }
-
-  applyState({ ...options, ...state })
+  state.apply(state.parse(loc))
 }
 
-function applyState (state) {
-  if (state.map !== 'auto') {
-    if (typeof map.getZoom() === 'undefined') {
-      map.setView({ lat: state.lat, lng: state.lon }, state.zoom)
-    } else {
-      map.flyTo({ lat: state.lat, lng: state.lon }, state.zoom)
-    }
+function applyState (newState) {
+  if (!overpassFrontend || newState.data !== options.data) {
+    loadData(newState.data ?? options.data)
   }
 
-  if (!overpassFrontend || state.data !== options.data) {
-    loadData(state.data)
-  }
-
-  if (!layer || state.styleFile !== options.styleFile) {
-    changeLayer(state.styleFile)
+  if (!layer || newState.styleFile !== options.styleFile) {
+    changeLayer(newState.styleFile ?? options.styleFile)
   }
 
   updateLink()
+}
+
+function getState (newState) {
+  newState.styleFile = options.styleFile
+
+  if (options.data !== config.data) {
+    newState.data = options.data
+  }
 }
 
 function loadConfig (callback) {
@@ -81,6 +69,8 @@ function loadConfig (callback) {
 }
 
 window.onload = function () {
+  state.on('apply', applyState)
+  state.on('get', getState)
   loadConfig(init)
 }
 
@@ -97,6 +87,7 @@ function init (err) {
   }).addTo(map)
 
   map.attributionControl.setPrefix('<a target="_blank" href="https://github.com/geowiki-net/geowiki-viewer/">geowiki-viewer</a>')
+  state.init(map)
 
   if (window.location.search) {
     let _options = queryString.parse(window.location.search)
@@ -119,7 +110,6 @@ function init (err) {
 
 function loadData (path) {
   options.data = path
-  options.styleFile = null
 
   if (isRelativePath(path)) {
     path = options.dataDirectory + '/' + path
@@ -138,41 +128,7 @@ function loadData (path) {
 }
 
 function updateLink () {
-  const state = {}
-
-  let zoom = map.getZoom()
-  if (typeof zoom !== 'undefined') {
-    let center = map.getCenter().wrap()
-    let zoom = parseFloat(map.getZoom()).toFixed(0)
-
-    var locPrecision = 5
-    if (zoom) {
-      locPrecision =
-        zoom > 16 ? 5
-          : zoom > 8 ? 4
-            : zoom > 4 ? 3
-              : zoom > 2 ? 2
-                : zoom > 1 ? 1
-                  : 0
-    }
-
-    state.map = zoom + '/' +
-      center.lat.toFixed(locPrecision) + '/' +
-      center.lng.toFixed(locPrecision)
-  }
-
-  state.styleFile = options.styleFile
-
-  if (options.data !== config.data) {
-    state.data = options.data
-  }
-
-  const link = queryString.stringify(state)
-    .replace(/%2F/g, '/')
-    .replace(/%2C/g, ',')
-    // Characters we dont's want escaped
-
-  global.history.replaceState(null, null, '#' + link)
+  global.history.replaceState(null, null, '#' + state.stringify())
 }
 
 function changeLayer (styleFile) {
