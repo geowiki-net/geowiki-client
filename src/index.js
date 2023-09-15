@@ -24,7 +24,7 @@ let options = { ...config }
 function hashApply (loc) {
   let state = queryString.parse(loc)
 
-  if (state.map === 'auto' && !overpassFrontend.localOnly) {
+  if (state.map === 'auto' && (overpassFrontend && !overpassFrontend.localOnly)) {
     state.map = '4/0/0'
   }
 
@@ -39,10 +39,12 @@ function hashApply (loc) {
 }
 
 function applyState (state) {
-  if (typeof map.getZoom() === 'undefined') {
-    map.setView({ lat: state.lat, lng: state.lon }, state.zoom)
-  } else {
-    map.flyTo({ lat: state.lat, lng: state.lon }, state.zoom)
+  if (state.map !== 'auto') {
+    if (typeof map.getZoom() === 'undefined') {
+      map.setView({ lat: state.lat, lng: state.lon }, state.zoom)
+    } else {
+      map.flyTo({ lat: state.lat, lng: state.lon }, state.zoom)
+    }
   }
 
   if (!overpassFrontend || state.data !== options.data) {
