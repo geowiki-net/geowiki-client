@@ -33,7 +33,7 @@
     "watchify": "^4.0.0",
     "xmldom": "^0.6.0"
   },
-  "main": "src/index.js",
+  "main": "src/export.js",
   "repository": "https://github.com/geowiki-net/geowiki-viewer",
   "author": "Stephan Bösch-Plepelits <skunk@xover.mud.at>",
   "license": "GPL-3.0"
