@@ -10,14 +10,6 @@ const state = require('./state')
 let overpassFrontend
 let map
 let layer
-// the config which has been defined here or in config.yaml
-let config = {
-  dataDirectory: 'example',
-  data: '//overpass-api.de/api/interpreter',
-  map: 'auto',
-  maxZoom: 20,
-  styleFile: 'style.yaml'
-}
 // the current options as modified by url parameters
 let options = { ...config }
 
@@ -42,25 +34,6 @@ function getState (newState) {
 }
 
 function loadConfig (callback) {
-  global.fetch('config.yaml')
-    .then(req => {
-      if (req.ok) {
-        return req.text()
-      }
-
-      throw (new Error("Can't load file config.yaml: " + req.statusText))
-    })
-    .then(body => {
-      const _config = yaml.parse(body)
-      config = { ...config, ..._config }
-      options = { ...config }
-
-      global.setTimeout(() => callback(null), 0)
-    })
-    .catch(err => {
-      console.error('Error loading config (' + err.message + '), using default options instead.')
-      global.setTimeout(() => callback(), 0)
-    })
 }
 
 window.onload = function () {
