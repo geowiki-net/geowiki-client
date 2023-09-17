@@ -38,8 +38,8 @@ class State extends Events {
     return state
   }
 
-  apply (state) {
-    if (typeof state === 'string') {
+  apply (state = null) {
+    if (!state || typeof state === 'string') {
       state = this.parse(state)
     }
 
@@ -101,7 +101,11 @@ class State extends Events {
     return link
   }
 
-  parse (link) {
+  parse (link = null) {
+    if (!link) {
+      link = global.location.hash
+    }
+
     var firstEquals = link.search('=')
     var firstAmp = link.search('&')
     var urlNonPathPart = ''
