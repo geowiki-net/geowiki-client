@@ -1,5 +1,6 @@
 import App from './App'
 const yaml = require('yaml')
+import state from './state'
 
 // the config which has been defined here or in config.yaml
 import defaultConfig from './defaultConfig.json'
@@ -30,6 +31,9 @@ function initFun (app, callback) {
     .then(body => {
       const _config = yaml.parse(body)
       app.config = { ...app.config, ..._config }
+
+      app.options = { ...app.config }
+      app.options = { ...app.options, ...state.parse() }
 
       global.setTimeout(() => callback(), 0)
     })
