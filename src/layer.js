@@ -39,4 +39,6 @@ function changeLayer (styleFile, options = {}) {
     overpassFrontend: app.overpassFrontend,
     styleFile: app.options.dataDirectory + '/' + styleFile
   }).addTo(app.map)
+
+  app.layer.on('error', error => global.alert(error))
 }
