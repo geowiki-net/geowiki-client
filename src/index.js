@@ -9,9 +9,6 @@ let layer
 let options = { ...config }
 
 function applyState (newState) {
-  if (!layer || newState.styleFile !== options.styleFile) {
-    changeLayer(newState.styleFile ?? options.styleFile)
-  }
 
   updateLink()
 }
@@ -52,15 +49,4 @@ function updateLink () {
   state.updateLink()
 }
 
-function changeLayer (styleFile) {
-  if (layer) {
-    layer.remove()
-  }
 
-  options.styleFile = styleFile
-
-  layer = new LeafletGeowiki({
-    overpassFrontend,
-    styleFile: options.dataDirectory + '/' + styleFile
-  }).addTo(map)
-}

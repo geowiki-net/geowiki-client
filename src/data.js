@@ -4,6 +4,7 @@ import isRelativePath from './isRelativePath'
 import App from './App'
 App.addExtension({
   id: 'data',
+  requireExtensions: ['map'],
   initFun
 })
 let app
