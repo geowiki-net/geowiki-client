@@ -21,11 +21,15 @@ function initFun (_app, callback) {
     state.styleFile = app.options.styleFile
   })
 
+  app.on('lang-change', () => {
+    changeLayer(app.options.styleFile, { force: true })
+  })
+
   callback()
 }
 
-function changeLayer (styleFile) {
-  if (app.layer) {
+function changeLayer (styleFile, options = {}) {
+  if (app.layer || options.force) {
     app.layer.remove()
   }
 
