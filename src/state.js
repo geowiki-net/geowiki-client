@@ -49,6 +49,10 @@ class State extends Events {
   }
 
   apply (state) {
+    if (typeof state === 'string') {
+      state = this.parse(state)
+    }
+
     // location
     if (state.lat && state.lon && state.zoom) {
       if (typeof map.getZoom() === 'undefined') {
