@@ -16,6 +16,11 @@ function initFun (app, callback) {
     method: 'POST'
   })
     .then(req => {
+      if (req.status === 404) {
+        // not found, using default config
+        return '{}'
+      }
+
       if (req.ok) {
         return req.text()
       }
@@ -26,10 +31,10 @@ function initFun (app, callback) {
       const _config = yaml.parse(body)
       app.config = { ...app.config, ..._config }
 
-      global.setTimeout(() => callback(null), 0)
+      global.setTimeout(() => callback(), 0)
     })
     .catch(err => {
-      console.error('Error loading config (' + err.message + '), using default options instead.')
-      global.setTimeout(() => callback(), 0)
+      const error = new Error('Error loading config file (' + err.message + ')')
+      global.setTimeout(() => callback(error), 0)
     })
 }

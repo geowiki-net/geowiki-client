@@ -42,8 +42,8 @@ class App extends Events {
 
       extension.initFun(this, (err) => {
         if (err) {
-          console.error(id, err)
-          return done()
+          console.log('error init', id, err)
+          return global.alert(err.message)
         }
 
         extension.done = true
