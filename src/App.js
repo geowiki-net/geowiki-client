@@ -1,3 +1,4 @@
+import LeafletGeowiki from 'leaflet-geowiki/all'
 import Events from 'events'
 const async = {
   each: require('async/each'),
