@@ -17,12 +17,6 @@ class State extends Events {
     hash(loc => {
       this.apply(loc.substr(1))
     })
-
-    if (global.location.hash) {
-      this.apply(global.location.hash)
-    } else {
-      this.apply('map=' + options.map)
-    }
   }
 
   setDefault (state) {

@@ -56,8 +56,12 @@ class App extends Events {
     console.log('init')
     state.on('get', state => this.emit('state-get', state))
     state.on('apply', state => this.emit('state-apply', state))
+
     this.options = { ...this.config }
     state.init(this.options, this.map)
+
+    this.options = { ...this.options, ...state.parse() }
+    state.apply()
   }
 
   updateLink () {
