@@ -1,5 +1,4 @@
 import App from './App'
-import state from './state'
 App.addExtension({
   id: 'map',
   requireExtensions: ['config'],
@@ -18,7 +17,7 @@ function initFun (app, callback) {
 
   app.map.attributionControl.setPrefix('<a target="_blank" href="https://github.com/geowiki-net/geowiki-viewer/">geowiki-viewer</a>')
 
-  map.on('moveend', () => state.updateLink())
+  app.map.on('moveend', () => app.updateLink())
 
   callback()
 }

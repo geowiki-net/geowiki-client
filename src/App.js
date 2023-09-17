@@ -4,6 +4,7 @@ const async = {
   each: require('async/each'),
   parallel: require('async/parallel')
 }
+import state from './state'
 
 const extensions = {}
 
@@ -54,6 +55,14 @@ class App extends Events {
 
   init () {
     console.log('init')
+    state.on('get', state => this.emit('state-get', state))
+    state.on('apply', state => this.emit('state-apply', state))
+    this.options = { ...this.config }
+    state.init(this.options, this.map)
+  }
+
+  updateLink () {
+    state.updateLink()
   }
 }
 
