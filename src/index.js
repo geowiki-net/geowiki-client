@@ -4,7 +4,6 @@ const OverpassFrontend = require('overpass-frontend')
 const LeafletGeowiki = require('leaflet-geowiki/all')
 const yaml = require('yaml')
 const queryString = require('query-string')
-const hash = require('sheet-router/hash')
 const isRelativePath = require('./isRelativePath')
 const state = require('./state')
 
@@ -21,10 +20,6 @@ let config = {
 }
 // the current options as modified by url parameters
 let options = { ...config }
-
-function hashApply (loc) {
-  state.apply(state.parse(loc))
-}
 
 function applyState (newState) {
   if (!overpassFrontend || newState.data !== options.data) {
@@ -87,7 +82,6 @@ function init (err) {
   }).addTo(map)
 
   map.attributionControl.setPrefix('<a target="_blank" href="https://github.com/geowiki-net/geowiki-viewer/">geowiki-viewer</a>')
-  state.init(map)
 
   if (window.location.search) {
     let _options = queryString.parse(window.location.search)
@@ -96,14 +90,7 @@ function init (err) {
     }
   }
 
-  hash(loc => {
-    hashApply(loc.substr(1))
-  })
-  if (global.location.hash) {
-    hashApply(global.location.hash)
-  } else {
-    hashApply('map=' + options.map)
-  }
+  state.init(options, map)
 
   map.on('moveend', () => updateLink())
 }

@@ -1,5 +1,6 @@
 const Events = require('events')
 const queryString = require('query-string')
+const hash = require('sheet-router/hash')
 
 let map
 
@@ -10,8 +11,18 @@ class State extends Events {
     this.defaultState = {}
   }
 
-  init (_map) {
+  init (options, _map) {
     map = _map
+
+    hash(loc => {
+      this.apply(loc.substr(1))
+    })
+
+    if (global.location.hash) {
+      this.apply(global.location.hash)
+    } else {
+      this.apply('map=' + options.map)
+    }
   }
 
   setDefault (state) {
