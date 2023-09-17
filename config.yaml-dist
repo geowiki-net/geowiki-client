@@ -19,5 +19,9 @@ map: 'auto'
 # higher than the max. native zoom)
 maxZoom: 20
 
+# Use the specified language. If not defined, the language will be detected
+# from the browser settings.
+#lang: 'en'
+
 # Default style file to load (from the data/-directory)
 styleFile: style.yaml

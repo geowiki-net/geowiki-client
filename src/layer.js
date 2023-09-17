@@ -3,7 +3,7 @@ import LeafletGeowiki from 'leaflet-geowiki/all'
 import App from './App'
 App.addExtension({
   id: 'layer',
-  requireExtensions: ['data', 'map'],
+  requireExtensions: ['data', 'map', 'lang'],
   initFun
 })
 let app
