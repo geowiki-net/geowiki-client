@@ -161,6 +161,10 @@ class State extends Events {
 
     return newState
   }
+
+  updateLink () {
+    global.history.replaceState(null, null, '#' + this.stringify())
+  }
 }
 
 module.exports = new State()

@@ -88,7 +88,7 @@ function loadData (path) {
 }
 
 function updateLink () {
-  global.history.replaceState(null, null, '#' + state.stringify())
+  state.updateLink()
 }
 
 function changeLayer (styleFile) {
