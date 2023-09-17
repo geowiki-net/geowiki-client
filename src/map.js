@@ -19,5 +19,26 @@ function initFun (app, callback) {
 
   app.map.on('moveend', () => app.updateLink())
 
+  app.on('state-apply', state => {
+    if (state.lat && state.lon && state.zoom) {
+      if (typeof app.map.getZoom() === 'undefined') {
+        app.map.setView({ lat: state.lat, lng: state.lon }, state.zoom)
+      } else {
+        app.map.flyTo({ lat: state.lat, lng: state.lon }, state.zoom)
+      }
+    }
+  })
+
+  app.on('state-get', state => {
+    if (typeof app.map.getZoom() !== 'undefined') {
+      const center = app.map.getCenter().wrap()
+      const zoom = parseInt(app.map.getZoom())
+
+      state.lat = center.lat
+      state.lon = center.lng
+      state.zoom = zoom
+    }
+  })
+
   callback()
 }

@@ -32,16 +32,6 @@ class State extends Events {
   get () {
     const state = {}
 
-    // location
-    if (typeof map.getZoom() !== 'undefined') {
-      const center = map.getCenter().wrap()
-      const zoom = parseInt(map.getZoom())
-
-      state.lat = center.lat
-      state.lon = center.lng
-      state.zoom = zoom
-    }
-
     // other modules
     this.emit('get', state)
 
@@ -51,15 +41,6 @@ class State extends Events {
   apply (state) {
     if (typeof state === 'string') {
       state = this.parse(state)
-    }
-
-    // location
-    if (state.lat && state.lon && state.zoom) {
-      if (typeof map.getZoom() === 'undefined') {
-        map.setView({ lat: state.lat, lng: state.lon }, state.zoom)
-      } else {
-        map.flyTo({ lat: state.lat, lng: state.lon }, state.zoom)
-      }
     }
 
     // other modules
