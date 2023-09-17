@@ -20,7 +20,7 @@ map: 'auto'
 maxZoom: 20
 
 # Use the specified language. If not defined, the language will be detected
-# from the browser settings.
+# from the browser settings. It can be overridden by the URL parameter 'lang'.
 #lang: 'en'
 
 # Default style file to load (from the data/-directory)
