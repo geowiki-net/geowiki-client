@@ -2,8 +2,6 @@ const Events = require('events')
 const queryString = require('query-string')
 const hash = require('sheet-router/hash')
 
-let map
-
 class State extends Events {
   constructor () {
     super()
@@ -11,9 +9,7 @@ class State extends Events {
     this.defaultState = {}
   }
 
-  init (options, _map) {
-    map = _map
-
+  init (options) {
     hash(loc => {
       this.apply(loc.substr(1))
     })
