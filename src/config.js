@@ -12,7 +12,9 @@ App.addExtension({
 function initFun (app, callback) {
   app.config = defaultConfig
 
-  global.fetch('config.yaml')
+  global.fetch('config.yaml', {
+    method: 'POST'
+  })
     .then(req => {
       if (req.ok) {
         return req.text()
