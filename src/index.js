@@ -1,22 +1,14 @@
 /* global L:false */
-
-const OverpassFrontend = require('overpass-frontend')
 const yaml = require('yaml')
 const queryString = require('query-string')
-const isRelativePath = require('./isRelativePath')
 const state = require('./state')
 
-let overpassFrontend
 let map
 let layer
 // the current options as modified by url parameters
 let options = { ...config }
 
 function applyState (newState) {
-  if (!overpassFrontend || newState.data !== options.data) {
-    loadData(newState.data ?? options.data)
-  }
-
   if (!layer || newState.styleFile !== options.styleFile) {
     changeLayer(newState.styleFile ?? options.styleFile)
   }
@@ -54,25 +46,6 @@ function init (err) {
   state.init(options, map)
 
   map.on('moveend', () => updateLink())
-}
-
-function loadData (path) {
-  options.data = path
-
-  if (isRelativePath(path)) {
-    path = options.dataDirectory + '/' + path
-  }
-
-  overpassFrontend = new OverpassFrontend(path)
-  if (overpassFrontend.localOnly) {
-    overpassFrontend.on('load', (meta) => {
-      if (typeof map.getZoom() === 'undefined') {
-        if (meta.bounds) {
-          map.fitBounds(meta.bounds.toLeaflet())
-        }
-      }
-    })
-  }
 }
 
 function updateLink () {
