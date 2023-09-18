@@ -39,4 +39,8 @@ function loadData (path) {
       }
     })
   }
+
+  app.overpassFrontend.on('error', err => {
+    global.alert(err.statusText)
+  })
 }
