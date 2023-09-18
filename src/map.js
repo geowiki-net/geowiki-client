@@ -27,7 +27,25 @@ function initFun (app, callback) {
       } else {
         app.map.flyTo({ lat: state.lat, lng: state.lon }, state.zoom)
       }
+      return
     }
+
+    const promises = []
+    app.emit('initial-map-view', promises)
+    Promise.any(promises)
+      .then(value => {
+        switch (value.type) {
+          case 'bounds':
+            app.map.fitBounds(value.bounds)
+            break
+          case 'view':
+            app.map.setView(value.center, value.zoom)
+            break
+        }
+      })
+      .catch(err => {
+        app.map.setView([0, 0], 4)
+      })
   })
 
   app.on('state-get', state => {

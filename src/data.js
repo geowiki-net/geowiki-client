@@ -15,7 +15,29 @@ function initFun (_app, callback) {
   app.on('state-apply', state => {
     if (!app.overpassFrontend || state.data !== app.options.data) {
       loadData(state.data ?? app.options.data)
+      app.emit('data-defined')
     }
+  })
+
+  app.on('initial-map-view', promises => {
+    promises.push(new Promise((resolve, reject) => {
+      app.on('data-defined', () => {
+        if (app.overpassFrontend.localOnly) {
+          app.overpassFrontend.on('load', meta => {
+            if (meta.bounds) {
+              resolve({
+                type: 'bounds',
+                bounds: meta.bounds.toLeaflet()
+              })
+            } else {
+              reject()
+            }
+          })
+        } else {
+          reject()
+        }
+      })
+    }))
   })
 
   callback()
@@ -29,18 +51,9 @@ function loadData (path) {
   }
 
   app.overpassFrontend = new OverpassFrontend(path)
-  if (app.overpassFrontend.localOnly) {
-    app.overpassFrontend.on('load', (meta) => {
-      // TODO: maybe move this to src/map? via state?
-      if (typeof app.map.getZoom() === 'undefined') {
-        if (meta.bounds) {
-          app.map.fitBounds(meta.bounds.toLeaflet())
-        }
-      }
-    })
-  }
 
   app.overpassFrontend.on('error', err => {
     global.alert(err.statusText)
   })
+
 }
