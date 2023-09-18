@@ -1,10 +1,10 @@
 import App from './App'
-import lang from './lang'
-import map from './map'
-import data from './data'
-import layer from './layer'
-import config from './config'
+import './lang'
+import './map'
+import './data'
+import './layer'
+import './config'
 
 window.onload = function () {
-  new App()
+  return new App()
 }

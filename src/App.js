@@ -1,9 +1,9 @@
 import Events from 'events'
+import state from './state'
 const async = {
   each: require('async/each'),
   parallel: require('async/parallel')
 }
-import state from './state'
 
 const extensions = {}
 
@@ -16,7 +16,7 @@ class App extends Events {
 
   initExtensions (callback) {
     const loadableExtensions = Object.entries(extensions)
-      .filter(([ id, extension ]) => {
+      .filter(([id, extension]) => {
         if (extension.done) {
           return false
         }

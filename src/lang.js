@@ -1,13 +1,11 @@
-const modulekitLang = require('modulekit-lang')
-
 import App from './App'
+
+const modulekitLang = require('modulekit-lang')
 App.addExtension({
   id: 'lang',
   requireExtensions: ['config'],
   initFun
 })
-
-let lang = null
 
 function initFun (app, callback) {
   modulekitLang.set(app.options.lang, {}, callback)

@@ -59,12 +59,17 @@ class State extends Events {
     let locPrecision = 5
     if (state.zoom) {
       locPrecision =
-        state.zoom > 16 ? 5
-        : state.zoom > 8 ? 4
-        : state.zoom > 4 ? 3
-        : state.zoom > 2 ? 2
-        : state.zoom > 1 ? 1
-        : 0
+        state.zoom > 16
+          ? 5
+          : state.zoom > 8
+            ? 4
+            : state.zoom > 4
+              ? 3
+              : state.zoom > 2
+                ? 2
+                : state.zoom > 1
+                  ? 1
+                  : 0
     }
 
     if (state.zoom && state.lat && state.lon) {
@@ -78,7 +83,7 @@ class State extends Events {
       delete state.lon
     }
 
-    var newHash = queryString.stringify(state)
+    let newHash = queryString.stringify(state)
 
     // Characters we don't want escaped
     newHash = newHash.replace(/%2F/g, '/')
@@ -96,11 +101,11 @@ class State extends Events {
       link = global.location.hash
     }
 
-    var firstEquals = link.search('=')
-    var firstAmp = link.search('&')
-    var urlNonPathPart = ''
-    var newState = {}
-    var newPath = ''
+    const firstEquals = link.search('=')
+    const firstAmp = link.search('&')
+    let urlNonPathPart = ''
+    let newState = {}
+    let newPath = ''
 
     if (link === '') {
       // nothing
@@ -127,7 +132,7 @@ class State extends Events {
     }
 
     if ('map' in newState && newState.map !== 'auto') {
-      var parts = newState.map.split('/')
+      const parts = newState.map.split('/')
       newState.zoom = parseFloat(parts[0])
       newState.lat = parseFloat(parts[1])
       newState.lon = parseFloat(parts[2])

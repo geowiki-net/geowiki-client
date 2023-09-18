@@ -1,3 +1,4 @@
+/* global L:false */
 import App from './App'
 App.addExtension({
   id: 'map',
