@@ -1,6 +1,6 @@
-const Events = require('events')
-const queryString = require('query-string')
-const hash = require('sheet-router/hash')
+import Events from 'events'
+import queryString from 'query-string'
+import hash from 'sheet-router/hash'
 
 class State extends Events {
   constructor () {

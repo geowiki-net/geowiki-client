@@ -1,6 +1,6 @@
 import App from './App'
+import modulekitLang from 'modulekit-lang'
 
-const modulekitLang = require('modulekit-lang')
 App.addExtension({
   id: 'lang',
   requireExtensions: ['config'],

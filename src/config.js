@@ -3,7 +3,7 @@ import state from './state'
 
 // the config which has been defined here or in config.yaml
 import defaultConfig from './defaultConfig.json'
-const yaml = require('yaml')
+import yaml from 'yaml'
 
 App.addExtension({
   id: 'config',

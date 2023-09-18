@@ -1,9 +1,6 @@
 import Events from 'events'
 import state from './state'
-const async = {
-  each: require('async/each'),
-  parallel: require('async/parallel')
-}
+import each from 'async/each'
 
 const extensions = {}
 
@@ -34,7 +31,7 @@ class App extends Events {
       return callback()
     }
 
-    async.each(loadableExtensions, ([id, extension], done) => {
+    each(loadableExtensions, ([id, extension], done) => {
       if (!extension.initFun) {
         extension.done = true
         return done()
