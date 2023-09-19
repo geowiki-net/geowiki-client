@@ -38,7 +38,8 @@ function changeLayer (styleFile, options = {}) {
   app.layer = new LeafletGeowiki({
     overpassFrontend: app.overpassFrontend,
     styleFile: app.options.dataDirectory + '/' + styleFile
-  }).addTo(app.map)
+  })
+  app.addMapLayer(app.layer)
 
   app.layer.on('error', error => global.alert(error))
 }

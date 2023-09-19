@@ -73,5 +73,12 @@ function initFun (app, callback) {
     }
   })
 
+  app.addMapLayer = (layer) => {
+    interactive = false
+    layer.addTo(app.map)
+    interactive = true
+  }
+
+
   callback()
 }
