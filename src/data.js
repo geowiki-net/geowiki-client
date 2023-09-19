@@ -21,7 +21,7 @@ function initFun (_app, callback) {
 
   app.on('initial-map-view', promises => {
     promises.push(new Promise((resolve, reject) => {
-      app.on('data-defined', () => {
+      app.once('data-defined', () => {
         if (app.overpassFrontend.localOnly) {
           app.overpassFrontend.on('load', meta => {
             if (meta.bounds) {
