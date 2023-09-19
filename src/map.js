@@ -6,6 +6,8 @@ App.addExtension({
   initFun
 })
 
+let interactive = true
+
 function initFun (app, callback) {
   app.map = L.map('map', { maxZoom: app.config.maxZoom })
 
@@ -18,15 +20,23 @@ function initFun (app, callback) {
 
   app.map.attributionControl.setPrefix('<a target="_blank" href="https://github.com/geowiki-net/geowiki-viewer/">geowiki-viewer</a>')
 
-  app.map.on('moveend', () => app.updateLink())
+  app.map.on('moveend', (e) => {
+    if (interactive) {
+      app.updateLink()
+    } else {
+      console.log('skip')
+    }
+  })
 
   app.on('state-apply', state => {
     if (state.lat && state.lon && state.zoom) {
+      interactive = false
       if (typeof app.map.getZoom() === 'undefined') {
         app.map.setView({ lat: state.lat, lng: state.lon }, state.zoom)
       } else {
         app.map.flyTo({ lat: state.lat, lng: state.lon }, state.zoom)
       }
+      interactive = true
       return
     }
 
@@ -34,6 +44,7 @@ function initFun (app, callback) {
     app.emit('initial-map-view', promises)
     Promise.any(promises)
       .then(value => {
+        interactive = false
         switch (value.type) {
           case 'bounds':
             app.map.fitBounds(value.bounds)
@@ -42,9 +53,12 @@ function initFun (app, callback) {
             app.map.setView(value.center, value.zoom)
             break
         }
+        interactive = true
       })
       .catch(err => {
+        interactive = false
         app.map.setView([0, 0], 4)
+        interactive = true
       })
   })
 
