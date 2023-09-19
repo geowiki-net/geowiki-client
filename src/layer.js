@@ -41,5 +41,7 @@ function changeLayer (styleFile, options = {}) {
   })
   app.addMapLayer(app.layer)
 
+  app.layer.on('load', () => app.emit('layer-load', app.layer))
+
   app.layer.on('error', error => global.alert(error))
 }
