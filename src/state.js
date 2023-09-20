@@ -5,18 +5,12 @@ import hash from 'sheet-router/hash'
 class State extends Events {
   constructor () {
     super()
-
-    this.defaultState = {}
   }
 
   init (options) {
     hash(loc => {
       this.apply(loc.substr(1))
     })
-  }
-
-  setDefault (state) {
-    this.defaultState = state
   }
 
   get () {
