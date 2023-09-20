@@ -35,6 +35,11 @@ function changeLayer (styleFile, options = {}) {
 
   app.options.styleFile = styleFile
 
+  if (!styleFile) {
+    app.layer = null
+    return
+  }
+
   app.layer = new LeafletGeowiki({
     overpassFrontend: app.overpassFrontend,
     styleFile: app.options.dataDirectory + '/' + styleFile
