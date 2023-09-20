@@ -13,7 +13,7 @@ function initFun (_app, callback) {
 
   app.on('state-apply', state => {
     if (!app.layer || state.styleFile !== app.options.styleFile) {
-      changeLayer(state.styleFile ?? app.options.styleFile)
+      changeLayer(state.styleFile)
     }
   })
 
