@@ -7,7 +7,7 @@ class State extends Events {
     super()
   }
 
-  init (options) {
+  init () {
     hash(loc => {
       this.apply(loc.substr(1))
     })

@@ -53,9 +53,10 @@ class App extends Events {
     state.on('get', state => this.emit('state-get', state))
     state.on('apply', state => this.emit('state-apply', state))
 
-    state.init(this.options)
+    state.init()
 
-    state.apply()
+    const initState = { ...this.options, ...state.parse() }
+    state.apply(initState)
   }
 
   updateLink () {
