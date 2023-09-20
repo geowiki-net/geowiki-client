@@ -12,7 +12,7 @@ function initFun (_app, callback) {
   app = _app
 
   app.on('state-apply', state => {
-    if (!app.layer || state.styleFile !== app.options.styleFile) {
+    if (!app.layer || ('styleFile' in state && state.styleFile !== app.options.styleFile)) {
       changeLayer(state.styleFile)
     }
   })

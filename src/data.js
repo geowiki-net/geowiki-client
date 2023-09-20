@@ -13,7 +13,7 @@ function initFun (_app, callback) {
   app = _app
 
   app.on('state-apply', state => {
-    if (!app.overpassFrontend || state.data !== app.options.data) {
+    if (!app.overpassFrontend || ('data' in state && state.data !== app.options.data)) {
       loadData(state.data)
       app.emit('data-defined')
     }
