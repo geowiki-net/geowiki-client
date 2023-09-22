@@ -1,4 +1,6 @@
+import yaml from 'yaml'
 import LeafletGeowiki from 'leaflet-geowiki/all'
+import styleLoader from './styleLoader'
 
 import App from './App'
 App.addExtension({
@@ -40,13 +42,27 @@ function changeLayer (styleFile, options = {}) {
     return
   }
 
-  app.layer = new LeafletGeowiki({
-    overpassFrontend: app.overpassFrontend,
-    styleFile: app.options.dataDirectory + '/' + styleFile
-  })
-  app.addMapLayer(app.layer)
+  styleLoader.get(styleFile)
+    .then(style => {
+      style = yaml.parse(style)
 
-  app.layer.on('load', () => app.emit('layer-load', app.layer))
+      app.layer = new LeafletGeowiki({
+        overpassFrontend: app.overpassFrontend,
+        style: style
+      })
+      app.addMapLayer(app.layer)
 
-  app.layer.on('error', error => global.alert(error))
+      app.layer.on('load', () => app.emit('layer-load', app.layer))
+
+      app.layer.on('error', error => global.alert(error))
+    })
+    .catch(error => {
+      if (!error.errors) {
+        global.alert(error.message)
+      } else if (error.errors.length) {
+        global.alert(error.errors[0].message)
+      } else {
+        global.alert("Style file not found")
+      }
+    })
 }
