@@ -1,9 +1,9 @@
+import yaml from 'js-yaml'
 import App from './App'
 import state from './state'
 
 // the config which has been defined here or in config.yaml
 import defaultConfig from './defaultConfig.json'
-import yaml from 'yaml'
 
 App.addExtension({
   id: 'config',
@@ -29,7 +29,7 @@ function initFun (app, callback) {
       throw (new Error("Can't load file config.yaml: " + req.statusText))
     })
     .then(body => {
-      const _config = yaml.parse(body)
+      const _config = yaml.load(body)
       app.config = { ...app.config, ..._config }
 
       app.options = { ...app.config }

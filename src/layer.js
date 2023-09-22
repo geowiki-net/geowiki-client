@@ -1,4 +1,4 @@
-import yaml from 'yaml'
+import yaml from 'js-yaml'
 import LeafletGeowiki from 'leaflet-geowiki/all'
 import styleLoader from './styleLoader'
 
@@ -44,7 +44,7 @@ function changeLayer (styleFile, options = {}) {
 
   styleLoader.get(styleFile)
     .then(style => {
-      style = yaml.parse(style)
+      style = yaml.load(style)
 
       app.layer = new LeafletGeowiki({
         overpassFrontend: app.overpassFrontend,
