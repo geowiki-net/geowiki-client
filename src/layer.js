@@ -28,6 +28,10 @@ function initFun (_app, callback) {
     changeLayer(app.options.styleFile, { force: true })
   })
 
+  app.on('data-defined', () => {
+    changeLayer(app.options.styleFile, { force: true })
+  })
+
   callback()
 }
 
