@@ -9,6 +9,7 @@ App.addExtension({
   initFun
 })
 let app
+let timeout = null
 
 function initFun (_app, callback) {
   app = _app
@@ -31,7 +32,15 @@ function initFun (_app, callback) {
 }
 
 function changeLayer (styleFile, options = {}) {
-  if (app.layer || options.force) {
+  if (timeout) {
+    global.clearTimeout(timeout)
+  }
+
+  timeout = global.setTimeout(() => _changeLayer(styleFile, options), 0)
+}
+
+function _changeLayer (styleFile, options = {}) {
+  if (app.layer) {
     app.layer.remove()
     app.layer = null
   }
@@ -45,6 +54,12 @@ function changeLayer (styleFile, options = {}) {
   styleLoader.get(styleFile)
     .then(style => {
       style = yaml.load(style)
+
+      // a layer has been added in the meantime
+      if (app.layer) {
+        app.layer.remove()
+        app.layer = null
+      }
 
       app.layer = new LeafletGeowiki({
         overpassFrontend: app.overpassFrontend,
