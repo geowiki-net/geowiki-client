@@ -62,6 +62,10 @@ class App extends Events {
   updateLink () {
     state.updateLink()
   }
+
+  setNonInteractive (value) {
+    this.interactive = !value
+  }
 }
 
 App.addExtension = (extension) => {

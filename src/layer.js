@@ -45,8 +45,10 @@ function changeLayer (styleFile, options = {}) {
 
 function _changeLayer (styleFile, options = {}) {
   if (app.layer) {
+    app.setNonInteractive(true)
     app.layer.remove()
     app.layer = null
+    app.setNonInteractive(false)
   }
 
   app.options.styleFile = styleFile
@@ -61,15 +63,22 @@ function _changeLayer (styleFile, options = {}) {
 
       // a layer has been added in the meantime
       if (app.layer) {
+        app.setNonInteractive(true)
         app.layer.remove()
         app.layer = null
+        app.setNonInteractive(false)
       }
 
       app.layer = new LeafletGeowiki({
         overpassFrontend: app.overpassFrontend,
         style: style
       })
-      app.addMapLayer(app.layer)
+
+      app.setNonInteractive(true)
+      if (app.map) {
+        app.layer.addTo(app.map)
+      }
+      app.setNonInteractive(false)
 
       app.layer.on('load', () => app.emit('layer-load', app.layer))
 
