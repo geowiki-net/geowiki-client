@@ -33,12 +33,12 @@ function initFun (_app, callback) {
 function changeLayer (styleFile, options = {}) {
   if (app.layer || options.force) {
     app.layer.remove()
+    app.layer = null
   }
 
   app.options.styleFile = styleFile
 
   if (!styleFile) {
-    app.layer = null
     return
   }
 
