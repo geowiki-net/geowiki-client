@@ -59,6 +59,10 @@ class App extends Events {
     state.apply(initState)
   }
 
+  stateApply (s) {
+    state.apply(s)
+  }
+
   updateLink () {
     state.updateLink()
   }
