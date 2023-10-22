@@ -59,6 +59,8 @@ function _changeLayer (styleFile, options = {}) {
 
   styleLoader.get(styleFile)
     .then(style => {
+      app.emit('style-load', style)
+
       style = yaml.load(style)
 
       // a layer has been added in the meantime
