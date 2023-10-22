@@ -53,6 +53,7 @@ class App extends Events {
     state.on('get', state => this.emit('state-get', state))
     state.on('apply', state => this.emit('state-apply', state))
 
+    this.emit('init')
     state.init()
 
     const initState = { ...this.options, ...state.parse() }
