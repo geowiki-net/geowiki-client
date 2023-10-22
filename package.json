@@ -3,7 +3,7 @@
   "description": "View custom OSM files with a versatile style file in YAML format.",
   "version": "0.1.0",
   "scripts": {
-    "build-translations": "build_dist_node",
+    "build-translations": "modulekit-lang-build-dist",
     "build": "browserify -p esmify -g browserify-css src/main.js -o dist/map.js",
     "prepare": "npm run build && npm run build-translations",
     "lint": "standard --fix src/*.js",
