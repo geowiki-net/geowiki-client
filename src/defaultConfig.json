@@ -3,5 +3,5 @@
   "data": "//overpass-api.de/api/interpreter",
   "map": "auto",
   "maxZoom": 20,
-  "styleFile": "style.yaml"
+  "styleFile": "amenities.yaml"
 }
