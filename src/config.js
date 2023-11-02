@@ -28,10 +28,10 @@ function initFun (app, callback) {
     })
     .then(body => {
       const _config = yaml.load(body)
-      app.config = { ...app.config, ..._config }
+      const defaultState = { ...app.config.defaultState, ...(_config.defaultState ?? {}) }
 
-      app.options = { ...app.config }
-      app.options = { ...app.options, ...state.parse() }
+      app.config = { ...app.config, ..._config }
+      app.options = { ...defaultState, ...app.state.parse() }
 
       global.setTimeout(() => callback(), 0)
     })

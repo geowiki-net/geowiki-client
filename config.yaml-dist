@@ -1,28 +1,29 @@
 # Data directory. The directory to load .osm files and style files from.
 dataDirectory: 'example'
 
-# Default address for Overpass API. Can be overridden by the data-parameter:
-# 1. absolute URL of a Overpass API server
-# 2. absolute URL of a OSM file (either .osm, .osm.bz2)
-# 3. name of a OSM file (either .osm, .osm.bz2) in dataDirectory
-data: 'data.osm'
-# To use the default Overpass API server:
-#data: '//overpass-api.de/api/interpreter'
-
-# Default Map Location. Can be overridden by the map-parameter with
-# zoom/lat/lon (e.g. map=17/12.345/67.890). Use 'auto' to load the bounding box
-# from the OSM file (or the whole world view, if a server is given).
-map: 'auto'
-# To use a specific map location
-#'17/12.345/67.890'
-
 # Max zoom level of the map (the background tiles will be scaled, if it is
 # higher than the max. native zoom)
 maxZoom: 20
 
-# Use the specified language. If not defined, the language will be detected
-# from the browser settings. It can be overridden by the URL parameter 'lang'.
-#lang: 'en'
+defaultState:
+  # Default address for Overpass API. Can be overridden by the data-parameter:
+  # 1. absolute URL of a Overpass API server
+  # 2. absolute URL of a OSM file (either .osm, .osm.bz2)
+  # 3. name of a OSM file (either .osm, .osm.bz2) in dataDirectory
+  data: 'data.osm'
+  # To use the default Overpass API server:
+  #data: '//overpass-api.de/api/interpreter'
 
-# Default style file to load (from the data/-directory)
-styleFile: style.yaml
+  # Default Map Location. Can be overridden by the map-parameter with
+  # zoom/lat/lon (e.g. map=17/12.345/67.890). Use 'auto' to load the bounding box
+  # from the OSM file (or the whole world view, if a server is given).
+  map: 'auto'
+  # To use a specific map location
+  #'17/12.345/67.890'
+
+  # Use the specified language. If not defined, the language will be detected
+  # from the browser settings. It can be overridden by the URL parameter 'lang'.
+  #lang: 'en'
+
+  # Default style file to load (from the data/-directory)
+  styleFile: style.yaml

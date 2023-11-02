@@ -1,7 +1,9 @@
 {
   "dataDirectory": "example",
-  "data": "//overpass-api.de/api/interpreter",
-  "map": "auto",
   "maxZoom": 20,
-  "styleFile": "amenities.yaml"
+  "defaultState": {
+    "map": "auto",
+    "data": "//overpass-api.de/api/interpreter",
+    "styleFile": "amenities.yaml"
+  }
 }

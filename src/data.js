@@ -47,7 +47,7 @@ function loadData (path) {
   app.options.data = path
 
   if (isRelativePath(path)) {
-    path = app.options.dataDirectory + '/' + path
+    path = app.config.dataDirectory + '/' + path
   }
 
   app.overpassFrontend = new OverpassFrontend(path)

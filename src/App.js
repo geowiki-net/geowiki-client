@@ -57,8 +57,7 @@ class App extends Events {
     this.emit('init')
     state.init()
 
-    const initState = { ...this.options, ...state.parse() }
-    state.apply(initState)
+    state.apply(this.options)
   }
 
   stateApply (s) {
