@@ -1,6 +1,5 @@
 import yaml from 'js-yaml'
 import App from './App'
-import state from './state'
 
 // the config which has been defined here or in config.yaml
 import defaultConfig from './defaultConfig.json'

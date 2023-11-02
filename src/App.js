@@ -8,6 +8,7 @@ class App extends Events {
   constructor () {
     super()
 
+    this.state = state
     this.initExtensions(() => this.init())
   }
 
