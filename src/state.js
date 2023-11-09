@@ -5,6 +5,7 @@ import hash from 'sheet-router/hash'
 class State extends Events {
   constructor () {
     super()
+    this.current = {}
   }
 
   init () {
@@ -19,12 +20,17 @@ class State extends Events {
     // other modules
     this.emit('get', state)
 
+    this.current = state
     return state
   }
 
   apply (state = null) {
     if (!state || typeof state === 'string') {
       state = this.parse(state)
+    }
+
+    for (const k in state) {
+      this.current[k] = state[k]
     }
 
     // other modules
