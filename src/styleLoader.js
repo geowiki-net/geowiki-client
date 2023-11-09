@@ -20,7 +20,7 @@ function initFun (_app, callback) {
               return req.text()
             }
 
-            throw (new Error("Can't load file " + style + ": " + req.statusText))
+            throw (new Error("Can't load file " + style + ': ' + req.statusText))
           })
           .then(body => resolve(body))
           .catch(err => reject(err))

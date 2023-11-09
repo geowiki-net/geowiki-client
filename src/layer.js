@@ -73,7 +73,7 @@ function _changeLayer (styleFile, options = {}) {
 
       app.layer = new LeafletGeowiki({
         overpassFrontend: app.overpassFrontend,
-        style: style
+        style
       })
 
       app.setNonInteractive(true)
@@ -92,7 +92,7 @@ function _changeLayer (styleFile, options = {}) {
       } else if (error.errors.length) {
         global.alert(error.errors[0].message)
       } else {
-        global.alert("Style file not found")
+        global.alert('Style file not found')
       }
     })
 }
