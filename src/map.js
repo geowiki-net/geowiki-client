@@ -79,15 +79,14 @@ function initFun (app, callback) {
 }
 
 function applyView (map, value) {
-  switch (value.type) {
-    case 'bounds':
-      if (!value.bounds.isValid()) { return false }
-      map.fitBounds(value.bounds)
-      return true
-      break
-    case 'view':
-      map.setView(value.center, value.zoom)
-      return true
-      break
+  if (value.bounds) {
+    if (!value.bounds.isValid()) { return false }
+    map.fitBounds(value.bounds)
+    return true
+  }
+
+  if (value.center) {
+    map.setView(value.center, value.zoom ?? 12)
+    return true
   }
 }

@@ -7,7 +7,6 @@ maxZoom: 20
 
 map:
   defaultView:
-    type: view
     center: [ 48.4, 16.3 ]
     zoom: 15
 
