@@ -25,6 +25,7 @@ class State extends Events {
   }
 
   apply (state = null) {
+    this.previous = { ...this.current }
     if (!state || typeof state === 'string') {
       state = this.parse(state)
     }
