@@ -79,6 +79,10 @@ function initFun (app, callback) {
 }
 
 function applyView (map, value) {
+  if (value.minlon) {
+    value.bounds = L.latLngBounds([ value.minlat, value.minlon], [value.maxlat, value.maxlon ])
+  }
+
   if (value.bounds) {
     if (!value.bounds.isValid()) { return false }
     map.fitBounds(value.bounds)

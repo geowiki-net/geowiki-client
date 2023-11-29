@@ -6,6 +6,7 @@ dataDirectory: 'example'
 maxZoom: 20
 
 map:
+  # default view is either center/zoom or minlon/minlat/maxlon/maxlat
   defaultView:
     center: [ 48.4, 16.3 ]
     zoom: 15
