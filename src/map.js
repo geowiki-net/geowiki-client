@@ -44,7 +44,13 @@ function initFun (app, callback) {
     app.getParameter('initial-map-view')
       .then(value => {
         app.setNonInteractive(true)
-        applyView(app.map, value)
+        if (!applyView(app.map, value)) {
+          if (app.config.map && app.config.map.defaultView) {
+            applyView(app.map, app.config.map.defaultView)
+          } else {
+            app.map.setView([0, 0], 4)
+          }
+        }
         app.setNonInteractive(false)
       })
       .catch(err => {
@@ -75,10 +81,13 @@ function initFun (app, callback) {
 function applyView (map, value) {
   switch (value.type) {
     case 'bounds':
+      if (!value.bounds.isValid()) { return false }
       map.fitBounds(value.bounds)
+      return true
       break
     case 'view':
       map.setView(value.center, value.zoom)
+      return true
       break
   }
 }
