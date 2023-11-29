@@ -44,14 +44,7 @@ function initFun (app, callback) {
     app.getParameter('initial-map-view')
       .then(value => {
         app.setNonInteractive(true)
-        switch (value.type) {
-          case 'bounds':
-            app.map.fitBounds(value.bounds)
-            break
-          case 'view':
-            app.map.setView(value.center, value.zoom)
-            break
-        }
+        applyView(app.map, value)
         app.setNonInteractive(false)
       })
       .catch(err => {
@@ -73,4 +66,15 @@ function initFun (app, callback) {
   })
 
   callback()
+}
+
+function applyView (map, value) {
+  switch (value.type) {
+    case 'bounds':
+      map.fitBounds(value.bounds)
+      break
+    case 'view':
+      map.setView(value.center, value.zoom)
+      break
+  }
 }
