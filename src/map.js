@@ -49,7 +49,11 @@ function initFun (app, callback) {
       })
       .catch(err => {
         app.setNonInteractive(true)
-        app.map.setView([0, 0], 4)
+        if (app.config.map && app.config.map.defaultView) {
+          applyView(app.map, app.config.map.defaultView)
+        } else {
+          app.map.setView([0, 0], 4)
+        }
         app.setNonInteractive(false)
       })
   })

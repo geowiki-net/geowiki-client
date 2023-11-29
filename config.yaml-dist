@@ -5,6 +5,12 @@ dataDirectory: 'example'
 # higher than the max. native zoom)
 maxZoom: 20
 
+map:
+  defaultView:
+    type: view
+    center: [ 48.4, 16.3 ]
+    zoom: 15
+
 defaultState:
   # Default address for Overpass API. Can be overridden by the data-parameter:
   # 1. absolute URL of a Overpass API server
