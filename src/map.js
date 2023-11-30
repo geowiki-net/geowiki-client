@@ -7,6 +7,15 @@ App.addExtension({
 })
 
 function initFun (app, callback) {
+  // default app config
+  app.config.app = {
+    ...{
+      name: 'geowiki-viewer',
+      url: 'https://github.com/geowiki-net/geowiki-viewer/'
+    },
+    ...(app.config.app ?? {})
+  }
+
   app.map = L.map('map', { maxZoom: app.config.maxZoom })
 
   // Show OSM map background
@@ -16,7 +25,7 @@ function initFun (app, callback) {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }).addTo(app.map)
 
-  app.map.attributionControl.setPrefix('<a target="_blank" href="https://github.com/geowiki-net/geowiki-viewer/">geowiki-viewer</a>')
+  app.map.attributionControl.setPrefix('<a target="_blank" href="' + encodeURI(app.config.app.url) + '">' + app.config.app.name + '</a>')
 
   app.map.on('moveend', (e) => {
     if (app.interactive) {
