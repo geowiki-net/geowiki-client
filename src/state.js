@@ -84,6 +84,9 @@ class State extends Events {
       delete state.lon
     }
 
+    // filter out null values
+    state = Object.fromEntries(Object.entries(state).filter(([k, v]) => v !== null))
+
     let newHash = queryString.stringify(state)
 
     // Characters we don't want escaped
@@ -143,8 +146,16 @@ class State extends Events {
     return newState
   }
 
-  updateLink () {
-    global.history.replaceState(null, null, '#' + this.stringify())
+  /**
+   * Update URL to current state.
+   * @param {boolean} [push=false] - by default, updateLink replaces state. If push=true, state will be pushed
+   */
+  updateLink (push = false) {
+    if (push) {
+      global.history.pushState(null, null, '#' + this.stringify())
+    } else {
+      global.history.replaceState(null, null, '#' + this.stringify())
+    }
   }
 }
 
