@@ -47,6 +47,13 @@ function initFun (app, callback) {
     }
 
     if (app.map.getZoom()) {
+      if (state.map === 'auto') {
+        app.setNonInteractive(true)
+        app.getParameter('initial-map-view')
+          .then(value => applyView(app.map, value))
+        app.setNonInteractive(false)
+      }
+
       return
     }
 
