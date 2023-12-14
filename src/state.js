@@ -103,6 +103,7 @@ class State extends Events {
   parse (link = null) {
     if (!link) {
       link = global.location.hash
+      link = link.replace(/^#+/, '')
     }
 
     const firstEquals = link.search('=')
