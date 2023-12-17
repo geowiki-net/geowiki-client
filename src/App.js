@@ -57,7 +57,7 @@ class App extends Events {
     this.emit('init')
     state.init()
 
-    state.apply(this.options)
+    state.apply(this.options, { update: 'replace' })
   }
 
   stateApply (s) {
