@@ -27,9 +27,11 @@ class State extends Events {
   /**
    * Change state of the app.
    * @param {object} state - Overwrite parameters to the new value.
+   * @param {object} [options={}] - Additional options
+   * @param {string} [options.update] - Update to state in the browser history, either with 'push' or 'replace'.
    * @emits State#apply
    */
-  apply (state = null) {
+  apply (state = null, options = {}) {
     this.previous = { ...this.current }
     if (!state || typeof state === 'string') {
       state = this.parse(state)
@@ -37,6 +39,10 @@ class State extends Events {
 
     for (const k in state) {
       this.current[k] = state[k]
+    }
+
+    if (options.update) {
+      this.updateLink(options.update === 'push')
     }
 
     // other modules
