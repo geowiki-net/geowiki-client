@@ -24,6 +24,11 @@ class State extends Events {
     return state
   }
 
+  /**
+   * Change state of the app.
+   * @param {object} state - Overwrite parameters to the new value.
+   * @emits State#apply
+   */
   apply (state = null) {
     this.previous = { ...this.current }
     if (!state || typeof state === 'string') {
