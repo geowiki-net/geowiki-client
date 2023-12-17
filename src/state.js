@@ -28,7 +28,7 @@ class State extends Events {
    * Change state of the app.
    * @param {object} state - Overwrite parameters to the new value.
    * @param {object} [options={}] - Additional options
-   * @param {string} [options.update] - Update to state in the browser history, either with 'push' or 'replace'.
+   * @param {string|null} [options.update=null] - Update to state in the browser history, either with 'push' or 'replace'. On null, the history will not be updated.
    * @emits State#apply
    */
   apply (state = null, options = {}) {
