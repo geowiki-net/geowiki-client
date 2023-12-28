@@ -63,7 +63,7 @@ class State extends Events {
 
     // path
     if (state.path) {
-      link += state.path
+      link += encodeURIComponent(state.path)
       delete state.path
     }
 
@@ -144,7 +144,7 @@ class State extends Events {
 
     newState = queryString.parse(urlNonPathPart)
     if (newPath !== '') {
-      newState.path = newPath
+      newState.path = decodeURIComponent(newPath)
     }
 
     if ('map' in newState && newState.map !== 'auto') {
