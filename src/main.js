@@ -6,8 +6,8 @@ import './layer'
 import './config'
 import './styleLoader'
 
-App.extensions = require('../extensions')
+const extensions = require('../extensions')
 
 window.onload = function () {
-  return new App()
+  window.app = new App(extensions)
 }

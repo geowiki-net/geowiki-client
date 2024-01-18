@@ -5,26 +5,27 @@ import each from 'async/each'
 const extensions = {}
 
 class App extends Events {
-  constructor () {
+  constructor (_extensions) {
     super()
 
-    if (App.extensions) {
-      App.extensions.forEach(e => extensions[e.id] = e)
+    if (_extensions) {
+      _extensions.forEach(e => extensions[e.id] = e)
     }
 
+    this.extensions = extensions
     this.state = state
     this.initExtensions(() => this.init())
   }
 
   initExtensions (callback) {
-    const loadableExtensions = Object.entries(extensions)
+    const loadableExtensions = Object.entries(this.extensions)
       .filter(([id, extension]) => {
         if (extension.done) {
           return false
         }
 
         if (extension.requireExtensions) {
-          if (!extension.requireExtensions.filter(rId => extensions[rId] && extensions[rId].done).length) {
+          if (!extension.requireExtensions.filter(rId => this.extensions[rId] && this.extensions[rId].done).length) {
             return false
           }
         }
