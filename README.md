@@ -61,6 +61,23 @@ panes:
 
 Add additional panes. Set style options as sub-object, including 'zIndex'.
 
+## Extensions
+There are a few extensions available. You can install them via npm, e.g. `npm
+install geowiki-module-fullscreen`. You then have to enable it in the
+'extensions.js' file and re-build your code with `npm run build`.
+
+To create your own extension, use this code as skeleton:
+```js
+module.exports = {
+  id: 'my-module-name',
+  requireExtensions: [], // add the name of any extensions which should be loaded first, e.g. 'map'
+  initFun: (app, callback) => {
+    // execute your start-up code here. You can hook to events with: app.on('init', () => { ... })
+    callback()
+  }
+}
+```
+
 ## Development
 When developing, use the following command to automatically update the compiled JS file - with debugging information included:
 ```sh

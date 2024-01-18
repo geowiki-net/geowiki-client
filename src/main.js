@@ -6,6 +6,8 @@ import './layer'
 import './config'
 import './styleLoader'
 
+App.extensions = require('../extensions')
+
 window.onload = function () {
   return new App()
 }

@@ -8,6 +8,10 @@ class App extends Events {
   constructor () {
     super()
 
+    if (App.extensions) {
+      App.extensions.forEach(e => extensions[e.id] = e)
+    }
+
     this.state = state
     this.initExtensions(() => this.init())
   }
