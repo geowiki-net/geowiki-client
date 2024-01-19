@@ -1,10 +1,9 @@
 /* global L:false */
-import App from './App'
-App.addExtension({
+module.exports = {
   id: 'map',
   requireExtensions: ['config'],
   appInit
-})
+}
 
 function appInit (app, callback) {
   // default app config

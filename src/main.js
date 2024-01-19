@@ -1,12 +1,15 @@
 import App from './App'
-import './lang'
-import './map'
-import './data'
-import './layer'
-import './config'
-import './styleLoader'
 
-App.extensions = [...App.extensions, ...require('../extensions')]
+const baseModules = [
+  require('./lang'),
+  require('./map'),
+  require('./data'),
+  require('./layer'),
+  require('./config'),
+  require('./styleLoader')
+]
+
+App.extensions = [...baseModules, ...App.extensions, ...require('../extensions')]
 
 window.onload = function () {
   window.app = new App()

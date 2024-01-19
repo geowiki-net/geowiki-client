@@ -1,13 +1,12 @@
 import yaml from 'js-yaml'
-import App from './App'
 
 // the config which has been defined here or in config.yaml
 import defaultConfig from './defaultConfig.json'
 
-App.addExtension({
+module.exports = {
   id: 'config',
   appInit
-})
+}
 
 function appInit (app, callback) {
   app.config = defaultConfig

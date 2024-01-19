@@ -1,11 +1,3 @@
-import App from './App'
-
-App.addExtension({
-  id: 'styleLoader',
-  requireExtensions: ['config'],
-  appInit
-})
-
 let app
 const styles = {}
 
@@ -32,6 +24,10 @@ function appInit (_app, callback) {
 }
 
 module.exports = {
+  id: 'styleLoader',
+  requireExtensions: ['config'],
+  appInit,
+
   get (style) {
     return new Promise((resolve, reject) => {
       if (style in styles) {

@@ -2,12 +2,11 @@ import yaml from 'js-yaml'
 import LeafletGeowiki from 'leaflet-geowiki/all'
 import styleLoader from './styleLoader'
 
-import App from './App'
-App.addExtension({
+module.exports = {
   id: 'layer',
   requireExtensions: ['data', 'map', 'lang'],
   appInit
-})
+}
 let app
 let timeout = null
 

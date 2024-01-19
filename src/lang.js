@@ -1,11 +1,10 @@
-import App from './App'
 import modulekitLang from 'modulekit-lang'
 
-App.addExtension({
+module.exports = {
   id: 'lang',
   requireExtensions: ['config'],
   appInit
-})
+}
 
 function appInit (app, callback) {
   modulekitLang.set(app.options.lang, {}, callback)

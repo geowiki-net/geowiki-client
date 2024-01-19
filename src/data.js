@@ -1,12 +1,11 @@
 import OverpassFrontend from 'overpass-frontend'
 
 import isRelativePath from './isRelativePath'
-import App from './App'
-App.addExtension({
+module.exports = {
   id: 'data',
   requireExtensions: ['map'],
   appInit
-})
+}
 let app
 
 function appInit (_app, callback) {
