@@ -5,11 +5,11 @@ import App from './App'
 App.addExtension({
   id: 'data',
   requireExtensions: ['map'],
-  initFun
+  appInit
 })
 let app
 
-function initFun (_app, callback) {
+function appInit (_app, callback) {
   app = _app
 
   app.on('state-apply', state => {

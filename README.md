@@ -71,10 +71,12 @@ To create your own extension, use this code as skeleton:
 module.exports = {
   id: 'my-module-name',
   requireExtensions: [], // add the name of any extensions which should be loaded first, e.g. 'map'
-  initFun: (app, callback) => {
-    // execute your start-up code here. You can hook to events with: app.on('init', () => { ... })
+  appInit: (app, callback) => {
+    // will be executed if run inside GeowikiViewer (if defined). You can hook
+    // to events with: app.on('init', () => { ... })
     callback()
   }
+}
 }
 ```
 

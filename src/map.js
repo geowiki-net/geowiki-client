@@ -3,10 +3,10 @@ import App from './App'
 App.addExtension({
   id: 'map',
   requireExtensions: ['config'],
-  initFun
+  appInit
 })
 
-function initFun (app, callback) {
+function appInit (app, callback) {
   // default app config
   app.config.app = {
     ...{

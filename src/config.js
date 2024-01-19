@@ -6,10 +6,10 @@ import defaultConfig from './defaultConfig.json'
 
 App.addExtension({
   id: 'config',
-  initFun
+  appInit
 })
 
-function initFun (app, callback) {
+function appInit (app, callback) {
   app.config = defaultConfig
 
   global.fetch('config.yaml', {

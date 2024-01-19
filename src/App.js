@@ -38,12 +38,12 @@ class App extends Events {
     }
 
     each(loadableExtensions, ([id, extension], done) => {
-      if (!extension.initFun) {
+      if (!extension.appInit) {
         extension.done = true
         return done()
       }
 
-      extension.initFun(this, (err) => {
+      extension.appInit(this, (err) => {
         if (err) {
           console.log('error init', id, err)
           return global.alert(err.message)

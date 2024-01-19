@@ -3,13 +3,13 @@ import App from './App'
 App.addExtension({
   id: 'styleLoader',
   requireExtensions: ['config'],
-  initFun
+  appInit
 })
 
 let app
 const styles = {}
 
-function initFun (_app, callback) {
+function appInit (_app, callback) {
   app = _app
   app.on('style-get', (style, promises) => {
     if (style.match(/(.+)\.yaml$/)) {

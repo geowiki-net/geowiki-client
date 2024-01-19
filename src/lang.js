@@ -4,10 +4,10 @@ import modulekitLang from 'modulekit-lang'
 App.addExtension({
   id: 'lang',
   requireExtensions: ['config'],
-  initFun
+  appInit
 })
 
-function initFun (app, callback) {
+function appInit (app, callback) {
   modulekitLang.set(app.options.lang, {}, callback)
 
   app.on('state-apply', state => {
