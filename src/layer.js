@@ -1,5 +1,6 @@
 import yaml from 'js-yaml'
 import LeafletGeowiki from 'leaflet-geowiki/all'
+import App from './App'
 import styleLoader from './styleLoader'
 
 module.exports = {
@@ -12,6 +13,8 @@ let timeout = null
 
 function appInit (_app, callback) {
   app = _app
+
+  LeafletGeowiki.extensions = [...LeafletGeowiki.extensions, ...App.extensions]
 
   app.on('state-apply', state => {
     if (!app.layer || ('styleFile' in state && state.styleFile !== app.options.styleFile)) {
