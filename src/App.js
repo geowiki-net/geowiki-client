@@ -1,6 +1,6 @@
 import Events from 'events'
 import state from './state'
-import each from 'async/each'
+import initExtensions from './initExtensions'
 
 const extensions = {}
 
@@ -18,41 +18,7 @@ class App extends Events {
   }
 
   initExtensions (callback) {
-    const loadableExtensions = Object.entries(this.extensions)
-      .filter(([id, extension]) => {
-        if (extension.done) {
-          return false
-        }
-
-        if (extension.requireExtensions) {
-          if (!extension.requireExtensions.filter(rId => this.extensions[rId] && this.extensions[rId].done).length) {
-            return false
-          }
-        }
-
-        return true
-      })
-
-    if (!loadableExtensions.length) {
-      return callback()
-    }
-
-    each(loadableExtensions, ([id, extension], done) => {
-      if (!extension.appInit) {
-        extension.done = true
-        return done()
-      }
-
-      extension.appInit(this, (err) => {
-        if (err) {
-          console.log('error init', id, err)
-          return global.alert(err.message)
-        }
-
-        extension.done = true
-        return done()
-      })
-    }, () => this.initExtensions(callback))
+    initExtensions(this, this.extensions, callback)
   }
 
   init () {
