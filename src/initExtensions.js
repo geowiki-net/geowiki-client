@@ -1,6 +1,6 @@
 import each from 'async/each'
 
-module.exports = function initExtensions (object, extensions, callback) {
+module.exports = function initExtensions (object, func, extensions, callback) {
   const loadableExtensions = Object.entries(extensions)
     .filter(([id, extension]) => {
       if (extension.done) {
@@ -21,14 +21,14 @@ module.exports = function initExtensions (object, extensions, callback) {
   }
 
   each(loadableExtensions, ([id, extension], done) => {
-    if (!extension.appInit) {
+    if (!extension[func]) {
       extension.done = true
       return done()
     }
 
-    if (extension.appInit.length < 2) {
+    if (extension[func].length < 2) {
       try {
-        extension.appInit(object)
+        extension[func](object)
       }
       catch (err) {
         console.log('error init', id, err)
@@ -39,7 +39,7 @@ module.exports = function initExtensions (object, extensions, callback) {
       return done()
     }
 
-    extension.appInit(object, (err) => {
+    extension[func](object, (err) => {
       if (err) {
         console.log('error init', id, err)
         return done(err)
@@ -50,6 +50,6 @@ module.exports = function initExtensions (object, extensions, callback) {
     })
   }, (err) => {
     if (err) { return callback(err) }
-    initExtensions(object, extensions, callback)
+    initExtensions(object, func, extensions, callback)
   })
 }
