@@ -1,6 +1,6 @@
 import Events from 'events'
 import state from './state'
-import initExtensions from './initExtensions'
+import initExtensions from 'leaflet-geowiki/src/initExtensions'
 
 const extensions = {}
 
