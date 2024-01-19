@@ -6,12 +6,12 @@ import App from './App'
 App.addExtension({
   id: 'layer',
   requireExtensions: ['data', 'map', 'lang'],
-  initFun
+  appInit
 })
 let app
 let timeout = null
 
-function initFun (_app, callback) {
+function appInit (_app, callback) {
   app = _app
 
   app.on('state-apply', state => {
