@@ -18,7 +18,13 @@ class App extends Events {
   }
 
   initExtensions (callback) {
-    initExtensions(this, this.extensions, callback)
+    initExtensions(this, this.extensions, (err) => {
+      if (err) {
+        global.alert(err.message)
+      }
+
+      callback()
+    })
   }
 
   init () {

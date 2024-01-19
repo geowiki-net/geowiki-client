@@ -29,11 +29,14 @@ module.exports = function initExtensions (object, extensions, callback) {
     extension.appInit(object, (err) => {
       if (err) {
         console.log('error init', id, err)
-        return global.alert(err.message)
+        return done(err)
       }
 
       extension.done = true
       return done()
     })
-  }, () => initExtensions(object, extensions, callback))
+  }, (err) => {
+    if (err) { return callback(err) }
+    initExtensions(object, extensions, callback)
+  })
 }
