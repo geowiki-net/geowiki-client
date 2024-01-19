@@ -71,9 +71,18 @@ To create your own extension, use this code as skeleton:
 module.exports = {
   id: 'my-module-name',
   requireExtensions: [], // add the name of any extensions which should be loaded first, e.g. 'map'
-  appInit: (app, callback) => {
+  layerInit: (layer, [callback]) => {
+    // will be executed for each LeafletGeowiki layer (if defined). You can
+    // hook to events with: layer.on('layeradd', () => { ... })
+    // if no callback argument is added, the function will be called
+    // synchronously.
+    callback()
+  },
+  appInit: (app, [callback]) => {
     // will be executed if run inside GeowikiViewer (if defined). You can hook
     // to events with: app.on('init', () => { ... })
+    // if no callback argument is added, the function will be called
+    // synchronously.
     callback()
   }
 }

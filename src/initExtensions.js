@@ -26,6 +26,19 @@ module.exports = function initExtensions (object, extensions, callback) {
       return done()
     }
 
+    if (extension.appInit.length < 2) {
+      try {
+        extension.appInit(object)
+      }
+      catch (err) {
+        console.log('error init', id, err)
+        return done(err)
+      }
+
+      extension.done = true
+      return done()
+    }
+
     extension.appInit(object, (err) => {
       if (err) {
         console.log('error init', id, err)
