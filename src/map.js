@@ -51,6 +51,7 @@ function appInit (app, callback) {
         app.setNonInteractive(true)
         app.getParameter('initial-map-view')
           .then(value => applyView(app.map, value))
+          .catch(() => {}) // ignore
         app.setNonInteractive(false)
       }
 
