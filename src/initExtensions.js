@@ -7,7 +7,7 @@ module.exports = function initExtensions (object, extensions, callback) {
         return false
       }
 
-      if (extension.requireExtensions) {
+      if (extension.requireExtensions && extension.requireExtensions.length) {
         if (!extension.requireExtensions.filter(rId => extensions[rId] && extensions[rId].done).length) {
           return false
         }
