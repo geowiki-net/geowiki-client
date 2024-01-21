@@ -2,7 +2,7 @@ import modulekitLang from 'modulekit-lang'
 
 module.exports = {
   id: 'lang',
-  requireExtensions: ['config'],
+  requireModules: ['config'],
   appInit
 }
 

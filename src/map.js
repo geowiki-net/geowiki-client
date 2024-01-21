@@ -1,7 +1,7 @@
 /* global L:false */
 module.exports = {
   id: 'map',
-  requireExtensions: ['config'],
+  requireModules: ['config'],
   appInit
 }
 

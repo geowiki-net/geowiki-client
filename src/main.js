@@ -9,7 +9,7 @@ const baseModules = [
   require('./styleLoader')
 ]
 
-App.extensions = [...baseModules, ...App.extensions, ...require('../extensions')]
+App.modules = [...baseModules, ...App.modules, ...require('../modules')]
 
 window.onload = function () {
   window.app = new App()

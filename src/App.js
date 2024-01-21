@@ -1,17 +1,17 @@
 import Events from 'events'
 import state from './state'
-import initExtensions from 'leaflet-geowiki/src/initExtensions'
+import initModules from 'leaflet-geowiki/src/initModules'
 
 class App extends Events {
   constructor () {
     super()
 
     this.state = state
-    this.initExtensions(() => this.init())
+    this.initModules(() => this.init())
   }
 
-  initExtensions (callback) {
-    initExtensions(this, 'appInit', App.extensions, (err) => {
+  initModules (callback) {
+    initModules(this, 'appInit', App.modules, (err) => {
       if (err) {
         global.alert(err.message)
       }
@@ -49,9 +49,9 @@ class App extends Events {
   }
 }
 
-App.extensions = []
-App.addExtension = (extension) => {
-  App.extensions.push(extension)
+App.modules = []
+App.addModule = (module) => {
+  App.modules.push(module)
 }
 
 module.exports = App
