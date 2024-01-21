@@ -5,7 +5,7 @@ import styleLoader from './styleLoader'
 
 module.exports = {
   id: 'layer',
-  requireExtensions: ['data', 'map', 'lang'],
+  requireModules: ['data', 'map', 'lang'],
   appInit
 }
 let app
@@ -14,7 +14,7 @@ let timeout = null
 function appInit (_app, callback) {
   app = _app
 
-  LeafletGeowiki.extensions = [...LeafletGeowiki.extensions, ...App.extensions]
+  LeafletGeowiki.modules = [...LeafletGeowiki.modules, ...App.modules]
 
   app.on('state-apply', state => {
     if (!app.layer || ('styleFile' in state && state.styleFile !== app.options.styleFile)) {

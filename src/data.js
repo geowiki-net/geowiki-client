@@ -3,7 +3,7 @@ import OverpassFrontend from 'overpass-frontend'
 import isRelativePath from './isRelativePath'
 module.exports = {
   id: 'data',
-  requireExtensions: ['map'],
+  requireModules: ['map'],
   appInit
 }
 let app

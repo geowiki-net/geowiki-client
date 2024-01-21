@@ -25,7 +25,7 @@ function appInit (_app, callback) {
 
 module.exports = {
   id: 'styleLoader',
-  requireExtensions: ['config'],
+  requireModules: ['config'],
   appInit,
 
   get (style) {

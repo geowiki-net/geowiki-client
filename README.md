@@ -61,16 +61,16 @@ panes:
 
 Add additional panes. Set style options as sub-object, including 'zIndex'.
 
-## Extensions
-There are a few extensions available. You can install them via npm, e.g. `npm
-install geowiki-module-fullscreen`. You then have to enable it in the
-'extensions.js' file and re-build your code with `npm run build`.
+## Modules
+There are a few additional modules available. You can install them via npm,
+e.g. `npm install geowiki-module-fullscreen`. You then have to enable it in the
+'modules.js' file and re-build your code with `npm run build`.
 
-To create your own extension, use this code as skeleton:
+To create your own module, use this code as skeleton:
 ```js
 module.exports = {
   id: 'my-module-name',
-  requireExtensions: [], // add the name of any extensions which should be loaded first, e.g. 'map'
+  requireModules: [], // add the name of any module which should be loaded first, e.g. 'map'
   layerInit: (layer, [callback]) => {
     // will be executed for each LeafletGeowiki layer (if defined). You can
     // hook to events with: layer.on('layeradd', () => { ... })
