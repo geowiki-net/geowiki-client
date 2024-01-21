@@ -3,4 +3,7 @@
 
 module.exports = [
   // require('geowiki-module-fullscreen'),
+
+  // Support for Opening Hours parser:
+  require('geowiki-module-opening-hours')
 ]
