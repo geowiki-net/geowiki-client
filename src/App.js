@@ -38,7 +38,7 @@ class App extends Events {
     state.updateLink()
   }
 
-  getParameter (str, fun='any') {
+  getParameter (str, fun = 'any') {
     const promises = []
     this.emit(str, promises)
     return Promise[fun](promises)

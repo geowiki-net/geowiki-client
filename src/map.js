@@ -69,7 +69,7 @@ function appInit (app, callback) {
         }
         app.setNonInteractive(false)
       })
-      .catch(err => {
+      .catch(() => { // ignore error
         app.setNonInteractive(true)
         if (app.config.map && app.config.map.defaultView) {
           applyView(app.map, app.config.map.defaultView)
@@ -96,7 +96,7 @@ function appInit (app, callback) {
 
 function applyView (map, value) {
   if (value.minlon) {
-    value.bounds = L.latLngBounds([ value.minlat, value.minlon], [value.maxlat, value.maxlon ])
+    value.bounds = L.latLngBounds([value.minlat, value.minlon], [value.maxlat, value.maxlon])
   }
 
   if (value.bounds) {
