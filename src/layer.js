@@ -1,5 +1,5 @@
 import yaml from 'js-yaml'
-import LeafletGeowiki from 'leaflet-geowiki/all'
+import LeafletGeowiki from 'leaflet-geowiki/minimal'
 import App from './App'
 import styleLoader from './styleLoader'
 
