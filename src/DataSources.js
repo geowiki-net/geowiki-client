@@ -26,6 +26,9 @@ module.exports = class DataSources {
       }
 
       this._list = app.config.dataSources ?? defaultList
+      Object.entries(this._list).forEach(([id, item]) => {
+        item.id = id
+      })
 
       resolve(this._list)
     })
@@ -49,6 +52,7 @@ module.exports = class DataSources {
 
         if (!(id in list)) { // TODO: maybe need to allow additional data sources
           list[id] = {
+            id,
             title: id,
             url: (isRelativePath(id) ? this.app.config.dataDirectory + '/' : '') + id
           }
