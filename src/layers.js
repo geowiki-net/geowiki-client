@@ -17,11 +17,9 @@ function appInit (_app, callback) {
 
   LeafletGeowiki.modules = [...LeafletGeowiki.modules, ...App.modules]
 
-  app.on('state-apply', state => {
-    let layers
-
-    if (app.state.current.layers) {
-      layers = app.state.current.layers.split(/,/).map(v => {
+  app.state.parameters.layers = {
+    parse (v) {
+      return v.split(/,/).map(v => {
         v = v.split(/:/)
 
         return {
@@ -29,6 +27,20 @@ function appInit (_app, callback) {
           data: v[1]
         }
       })
+    },
+
+    stringify (v) {
+      return v.map(layer => {
+        return layer.styleFile && layer.data ? layer.styleFile + ':' + layer.data : ''
+      }).filter(v => v).join(',')
+    }
+  }
+
+  app.on('state-apply', state => {
+    let layers
+
+    if (app.state.current.layers) {
+      layers = app.state.current.layers
     } else {
       layers = [{
         styleFile: app.state.current.styleFile,
@@ -41,9 +53,7 @@ function appInit (_app, callback) {
 
   app.on('state-get', state => {
     // TODO: might still return an old set of layers
-    state.layers = app.layers.map(layer => {
-      return layer.styleFile && layer.data ? layer.styleFile + ':' + layer.data : ''
-    }).filter(v => v).join(',')
+    state.layers = app.layers
   })
 
   app.on('lang-change', () => {
