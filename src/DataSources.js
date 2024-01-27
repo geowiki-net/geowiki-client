@@ -25,9 +25,17 @@ module.exports = class DataSources {
         return resolve(this._list)
       }
 
-      this._list = app.config.dataSources ?? defaultList
+      this._list = defaultList
+      if (app.config.dataSources) {
+        this._list = app.config.dataSources.list ?? defaultList
+      }
+
       Object.entries(this._list).forEach(([id, item]) => {
         item.id = id
+
+        if (!item.title) {
+          item.title = id
+        }
       })
 
       resolve(this._list)
@@ -54,14 +62,15 @@ module.exports = class DataSources {
           list[id] = {
             id,
             title: id,
-            url: (isRelativePath(id) ? this.app.config.dataDirectory + '/' : '') + id
+            url: id
           }
         }
 
         const item = list[id]
 
         if (!item.dataSource) {
-          item.dataSource = new OverpassFrontend(item.url, item.options)
+          const url = (isRelativePath(item.url) ? this.app.config.dataDirectory + '/' : '') + item.url
+          item.dataSource = new OverpassFrontend(url, item.options)
         }
 
         resolve(item)
