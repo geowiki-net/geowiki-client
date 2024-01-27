@@ -66,6 +66,8 @@ function changeLayers (layers, options = {}) {
 }
 
 function _changeLayer (layers, options = {}) {
+  let change = false
+
   if (!app.layers) {
     app.layers = []
   }
@@ -81,6 +83,8 @@ function _changeLayer (layers, options = {}) {
       delete app.layers[i]
     }
     app.setNonInteractive(false)
+
+    change = true
   }
 
   eachOf(layers, (layer, i, done) => {
@@ -101,6 +105,7 @@ function _changeLayer (layers, options = {}) {
 
     currentLayer.styleFile = layer.styleFile
     currentLayer.data = layer.data
+    change = true
 
     if (!currentLayer.styleFile) {
       return done()
@@ -153,6 +158,8 @@ function _changeLayer (layers, options = {}) {
       done()
     })
   }, (err) => {
-    app.updateLink()
+    if (change) {
+      app.updateLink()
+    }
   })
 }
