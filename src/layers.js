@@ -39,9 +39,10 @@ function appInit (_app, callback) {
   })
 
   app.on('state-get', state => {
+    // TODO: might still return an old set of layers
     state.layers = app.layers.map(layer => {
-      return layer.styleFile + ':' + layer.data
-    }).join(',')
+      return layer.styleFile && layer.data ? layer.styleFile + ':' + layer.data : ''
+    }).filter(v => v).join(',')
   })
 
   app.on('lang-change', () => {
@@ -70,6 +71,15 @@ function _changeLayer (layers, options = {}) {
 
   if (layers === null) {
     layers = app.layers
+  }
+
+  for (let i = layers.length; i < app.layers.length; i++) {
+    app.setNonInteractive(true)
+    if (app.layers[i] && app.layers[i].layer) {
+      app.layers[i].layer.remove()
+      delete app.layers[i]
+    }
+    app.setNonInteractive(false)
   }
 
   layers.forEach((layer, i) => {
