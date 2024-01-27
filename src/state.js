@@ -6,6 +6,9 @@ class State extends Events {
   constructor () {
     super()
     this.current = {}
+
+    // define parse and stringify for specific parameters
+    this.parameters = {}
   }
 
   init () {
@@ -98,6 +101,13 @@ class State extends Events {
     // filter out null values
     state = Object.fromEntries(Object.entries(state).filter(([k, v]) => v !== null))
 
+    // format all parameters with special stringify function
+    Object.entries(this.parameters).forEach(([k, parameter]) => {
+      if (state[k] && parameter.stringify) {
+        state[k] = parameter.stringify(state[k])
+      }
+    })
+
     let newHash = queryString.stringify(state)
 
     // Characters we don't want escaped
@@ -155,6 +165,13 @@ class State extends Events {
       newState.lon = parseFloat(parts[2])
       delete newState.map
     }
+
+    // format all parameters with special stringify function
+    Object.entries(this.parameters).forEach(([k, parameter]) => {
+      if (newState[k] && parameter.parse) {
+        newState[k] = parameter.parse(newState[k])
+      }
+    })
 
     return newState
   }
