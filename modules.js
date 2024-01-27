@@ -35,4 +35,7 @@ module.exports = [
   // Add a 'Fullscreen' button to Geowiki Viewer
   // install via 'npm install github:geowiki-net/geowiki-module-fullscreen'
   // require('geowiki-module-fullscreen'),
+
+  // Layer Selector
+  require('./src/layer-selector'),
 ]

@@ -17,6 +17,7 @@
     "leaflet-polylinedecorator": "git+https://github.com/plepe/Leaflet.PolylineDecorator.git",
     "leaflet-polylineoffset": "^1.1.1",
     "leaflet-textpath": "github:makinacorpus/Leaflet.TextPath#leaflet0.8-dev",
+    "modulekit-window": "github:plepe/modulekit-window",
     "overpass-frontend": "^3.1.2",
     "overpass-layer": "^3.4.0"
   },
