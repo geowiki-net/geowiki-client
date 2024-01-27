@@ -79,6 +79,9 @@ function changeLayers (layers, options = {}) {
 
 function _changeLayer (layers, options = {}) {
   let change = false
+  if (typeof layers === 'string') {
+    layers = app.state.parameters.layers.parse(layers)
+  }
 
   if (!app.layers) {
     app.layers = []
