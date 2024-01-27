@@ -1,4 +1,5 @@
 import yaml from 'js-yaml'
+import eachOf from 'async/eachOf'
 import LeafletGeowiki from 'leaflet-geowiki/minimal'
 import App from './App'
 import styleLoader from './styleLoader'
@@ -82,7 +83,7 @@ function _changeLayer (layers, options = {}) {
     app.setNonInteractive(false)
   }
 
-  layers.forEach((layer, i) => {
+  eachOf(layers, (layer, i, done) => {
     if (!app.layers[i]) {
       app.layers[i] = {}
     }
@@ -90,7 +91,7 @@ function _changeLayer (layers, options = {}) {
     const currentLayer = app.layers[i]
 
     if (currentLayer.layer && layer.styleFile === currentLayer.styleFile && layer.data === currentLayer.data) {
-      return
+      return done()
     } else if (currentLayer.layer) {
       app.setNonInteractive(true)
       currentLayer.layer.remove()
@@ -102,7 +103,7 @@ function _changeLayer (layers, options = {}) {
     currentLayer.data = layer.data
 
     if (!currentLayer.styleFile) {
-      return
+      return done()
     }
 
     Promise.all([
@@ -137,6 +138,8 @@ function _changeLayer (layers, options = {}) {
       layer.on('load', () => app.emit('layer-load', app.layer))
 
       layer.on('error', error => global.alert(error))
+
+      done()
     })
     .catch(error => {
       if (!error.errors) {
@@ -146,6 +149,10 @@ function _changeLayer (layers, options = {}) {
       } else {
         global.alert('Style file not found')
       }
+
+      done()
     })
+  }, (err) => {
+    app.updateLink()
   })
 }
