@@ -53,7 +53,9 @@ function appInit (_app, callback) {
 
   app.on('state-get', state => {
     // TODO: might still return an old set of layers
-    state.layers = app.layers
+    state.layers = app.layers.map(l => {
+      return { data: l.data, styleFile: l.styleFile }
+    })
   })
 
   app.on('lang-change', () => {
