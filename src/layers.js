@@ -170,6 +170,7 @@ function _changeLayer (layers, options = {}) {
   }, (err) => {
     if (change) {
       app.updateLink()
+      app.emit('layers-update')
     }
   })
 }
