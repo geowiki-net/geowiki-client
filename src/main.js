@@ -4,7 +4,7 @@ const baseModules = [
   require('./lang'),
   require('./map'),
   require('./dataSources'),
-  require('./layer'),
+  require('./layers'),
   require('./config'),
   require('./styleLoader')
 ]

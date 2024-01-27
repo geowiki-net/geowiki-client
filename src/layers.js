@@ -1,0 +1,141 @@
+import yaml from 'js-yaml'
+import LeafletGeowiki from 'leaflet-geowiki/minimal'
+import App from './App'
+import styleLoader from './styleLoader'
+
+module.exports = {
+  id: 'layers',
+  requireModules: ['data', 'map', 'lang'],
+  appInit
+}
+let app
+let timeout = null
+
+function appInit (_app, callback) {
+  app = _app
+
+  LeafletGeowiki.modules = [...LeafletGeowiki.modules, ...App.modules]
+
+  app.on('state-apply', state => {
+    let layers
+
+    if (app.state.current.layers) {
+      layers = app.state.current.layers.split(/,/).map(v => {
+        v = v.split(/:/)
+
+        return {
+          styleFile: v[0],
+          data: v[1]
+        }
+      })
+    } else {
+      layers = [{
+        styleFile: app.state.current.styleFile,
+        data: app.state.current.data
+      }]
+    }
+
+    changeLayers(layers)
+  })
+
+  app.on('state-get', state => {
+    state.layers = app.layers.map(layer => {
+      return layer.styleFile + ':' + layer.data
+    }).join(',')
+  })
+
+  app.on('lang-change', () => {
+    changeLayers(null, { force: true })
+  })
+
+  app.on('data-defined', () => {
+    changeLayers(null, { force: true })
+  })
+
+  callback()
+}
+
+function changeLayers (layers, options = {}) {
+  if (timeout) {
+    global.clearTimeout(timeout)
+  }
+
+  timeout = global.setTimeout(() => _changeLayer(layers, options), 0)
+}
+
+function _changeLayer (layers, options = {}) {
+  if (!app.layers) {
+    app.layers = []
+  }
+
+  if (layers === null) {
+    layers = app.layers
+  }
+
+  layers.forEach((layer, i) => {
+    if (!app.layers[i]) {
+      app.layers[i] = {}
+    }
+
+    const currentLayer = app.layers[i]
+
+    if (currentLayer.layer && layer.styleFile === currentLayer.styleFile && layer.data === currentLayer.data) {
+      return
+    } else if (currentLayer.layer) {
+      app.setNonInteractive(true)
+      currentLayer.layer.remove()
+      currentLayer.layer = null
+      app.setNonInteractive(false)
+    }
+
+    currentLayer.styleFile = layer.styleFile
+    currentLayer.data = layer.data
+
+    if (!currentLayer.styleFile) {
+      return
+    }
+
+    Promise.all([
+      app.dataSources.get(currentLayer.data),
+      styleLoader.get(currentLayer.styleFile)
+    ]).then(([data, style]) => {
+      currentLayer.data = data.id
+
+      app.emit('style-load', style)
+
+      style = yaml.load(style)
+
+      // a layer has been added in the meantime
+      if (currentLayer.layer) {
+        app.setNonInteractive(true)
+        currentLayer.layer.remove()
+        app.setNonInteractive(false)
+      }
+
+      let layer = new LeafletGeowiki({
+        overpassFrontend: data.dataSource,
+        style
+      })
+      currentLayer.layer = layer
+
+      app.setNonInteractive(true)
+      if (app.map) {
+        layer.addTo(app.map)
+      }
+      app.setNonInteractive(false)
+
+      layer.on('load', () => app.emit('layer-load', app.layer))
+
+      layer.on('error', error => global.alert(error))
+    })
+    .catch(error => {
+      if (!error.errors) {
+        global.alert(error.message)
+      } else if (error.errors.length) {
+        global.alert(error.errors[0].message)
+      } else {
+        global.alert('Style file not found')
+      }
+    })
+  })
+}
