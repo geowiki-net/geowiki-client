@@ -15,11 +15,20 @@ map:
     center: [ 48.4, 16.3 ]
     zoom: 15
 
+dataSources:
+  # all sources from the list will be available
+  list:
+    osm:
+      title: 'Overpass API'
+      url: //overpass-api.de/api/interpreter
+      options: {}
+
 defaultState:
   # Default address for Overpass API. Can be overridden by the data-parameter:
   # 1. absolute URL of a Overpass API server
   # 2. absolute URL of a OSM file (either .osm, .osm.bz2)
   # 3. name of a OSM file (either .osm, .osm.bz2) in dataDirectory
+  # 4. the id of a source in dataSources.list
   data: 'data.osm'
   # To use the default Overpass API server:
   #data: '//overpass-api.de/api/interpreter'

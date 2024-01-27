@@ -17,8 +17,8 @@ function appInit (_app, callback) {
   LeafletGeowiki.modules = [...LeafletGeowiki.modules, ...App.modules]
 
   app.on('state-apply', state => {
-    if (!app.layer || ('styleFile' in state && state.styleFile !== app.options.styleFile)) {
-      changeLayer(state.styleFile)
+    if (!app.layer || ('styleFile' in state && state.styleFile !== app.options.styleFile) || ('data' in state && state.data !== app.options.data)) {
+      changeLayer(app.state.current.styleFile, app.state.current.data)
     }
   })
 
@@ -37,15 +37,15 @@ function appInit (_app, callback) {
   callback()
 }
 
-function changeLayer (styleFile, options = {}) {
+function changeLayer (styleFile, data, options = {}) {
   if (timeout) {
     global.clearTimeout(timeout)
   }
 
-  timeout = global.setTimeout(() => _changeLayer(styleFile, options), 0)
+  timeout = global.setTimeout(() => _changeLayer(styleFile, data, options), 0)
 }
 
-function _changeLayer (styleFile, options = {}) {
+function _changeLayer (styleFile, dataSource, options = {}) {
   if (app.layer) {
     app.setNonInteractive(true)
     app.layer.remove()
@@ -59,8 +59,10 @@ function _changeLayer (styleFile, options = {}) {
     return
   }
 
-  styleLoader.get(styleFile)
-    .then(style => {
+  Promise.all([
+    app.dataSources.get(dataSource),
+    styleLoader.get(styleFile)
+  ]).then(([data, style]) => {
       app.emit('style-load', style)
 
       style = yaml.load(style)
@@ -74,7 +76,7 @@ function _changeLayer (styleFile, options = {}) {
       }
 
       app.layer = new LeafletGeowiki({
-        overpassFrontend: app.overpassFrontend,
+        overpassFrontend: data.dataSource,
         style
       })
 

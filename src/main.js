@@ -3,7 +3,7 @@ import App from './App'
 const baseModules = [
   require('./lang'),
   require('./map'),
-  require('./data'),
+  require('./dataSources'),
   require('./layer'),
   require('./config'),
   require('./styleLoader')
