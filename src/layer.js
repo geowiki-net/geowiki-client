@@ -24,6 +24,7 @@ function appInit (_app, callback) {
 
   app.on('state-get', state => {
     state.styleFile = app.options.styleFile
+    state.data = app.options.data
   })
 
   app.on('lang-change', () => {
@@ -45,7 +46,7 @@ function changeLayer (styleFile, data, options = {}) {
   timeout = global.setTimeout(() => _changeLayer(styleFile, data, options), 0)
 }
 
-function _changeLayer (styleFile, dataSource, options = {}) {
+function _changeLayer (styleFile, data, options = {}) {
   if (app.layer) {
     app.setNonInteractive(true)
     app.layer.remove()
@@ -54,13 +55,14 @@ function _changeLayer (styleFile, dataSource, options = {}) {
   }
 
   app.options.styleFile = styleFile
+  app.options.data = data
 
   if (!styleFile) {
     return
   }
 
   Promise.all([
-    app.dataSources.get(dataSource),
+    app.dataSources.get(data),
     styleLoader.get(styleFile)
   ]).then(([data, style]) => {
       app.emit('style-load', style)

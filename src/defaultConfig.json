@@ -3,7 +3,7 @@
   "maxZoom": 20,
   "defaultState": {
     "map": "auto",
-    "data": "//overpass-api.de/api/interpreter",
+    "data": "osm",
     "styleFile": "amenities.yaml"
   }
 }
