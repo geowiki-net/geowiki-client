@@ -103,6 +103,7 @@ class State extends Events {
     // Characters we don't want escaped
     newHash = newHash.replace(/%2F/g, '/')
     newHash = newHash.replace(/%2C/g, ',')
+    newHash = newHash.replace(/%3A/g, ':')
 
     if (newHash !== '') {
       link += (link === '' ? '' : '&') + newHash
