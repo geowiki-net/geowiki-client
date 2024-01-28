@@ -61,7 +61,7 @@ module.exports = class EntityList {
 
         const item = list[id]
 
-        if (!item.dataSource) {
+        if (!item.data) {
           const url = (isRelativePath(item.url) ? this.app.config.dataDirectory + '/' : '') + item.url
           this.resolveItem(item, url)
         }

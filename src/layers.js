@@ -144,7 +144,7 @@ function _changeLayer (layers, options = {}) {
       }
 
       let layer = new LeafletGeowiki({
-        overpassFrontend: data.dataSource,
+        overpassFrontend: data.data,
         style
       })
       currentLayer.layer = layer
