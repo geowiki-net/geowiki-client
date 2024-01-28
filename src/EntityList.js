@@ -33,8 +33,21 @@ module.exports = class EntityList extends Events {
         }
       })
 
-      this.emit('update')
-      resolve(this._list)
+      const promises = []
+      this.emit('list-entities', promises)
+      Promise.all(promises).then(values => {
+        values = values.flat(1)
+        values.forEach(item => {
+          if (!item.title) {
+            item.title = item.id
+          }
+
+          this._list[item.id] = item
+        })
+
+        this.emit('update')
+        resolve(this._list)
+      })
     })
   }
 

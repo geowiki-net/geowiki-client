@@ -12,6 +12,7 @@ module.exports = class DataSources extends EntityList {
   constructor (app) {
     super(app, app.config.dataSources, defaultList)
     this.on('update', () => app.emit('data-sources-update'))
+    this.on('list-entities', promises => app.emit('list-data-sources', promises))
   }
 
   resolveItem (item, url) {
