@@ -29,9 +29,6 @@ module.exports = [
   // Evaluate an object against the current stylesheet to get the style (often used in map info)
   require('leaflet-geowiki/src/evaluate'),
 
-  // Support for Opening Hours parser:
-  require('geowiki-module-opening-hours'),
-
   // Add a 'Fullscreen' button to Geowiki Viewer
   require('geowiki-module-fullscreen'),
 
