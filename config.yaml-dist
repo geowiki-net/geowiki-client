@@ -23,6 +23,12 @@ dataSources:
       url: //overpass-api.de/api/interpreter
       options: {}
 
+styles:
+  list:
+    amenities:
+      title: 'All amenities'
+      url: amenities.yaml
+
 defaultState:
   # Default address for Overpass API. Can be overridden by the data-parameter:
   # 1. absolute URL of a Overpass API server

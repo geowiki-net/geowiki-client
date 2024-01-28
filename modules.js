@@ -38,4 +38,7 @@ module.exports = [
 
   // Layer Selector
   require('./src/layer-selector'),
+
+  // Load Styles from data/-Directory
+  require('./src/styleLoaderFromData'),
 ]

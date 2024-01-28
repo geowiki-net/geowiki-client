@@ -2,7 +2,6 @@ import yaml from 'js-yaml'
 import eachOf from 'async/eachOf'
 import LeafletGeowiki from 'leaflet-geowiki/minimal'
 import App from './App'
-import styleLoader from './styleLoader'
 
 module.exports = {
   id: 'layers',
@@ -128,13 +127,13 @@ function _changeLayer (layers, options = {}) {
 
     Promise.all([
       app.dataSources.get(currentLayer.data),
-      styleLoader.get(currentLayer.styleFile)
+      app.styleLoader.get(currentLayer.styleFile)
     ]).then(([data, style]) => {
       currentLayer.data = data.id
 
-      app.emit('style-load', style)
+      app.emit('style-load', style.data)
 
-      style = yaml.load(style)
+      style = yaml.load(style.data)
 
       // a layer has been added in the meantime
       if (currentLayer.layer) {
