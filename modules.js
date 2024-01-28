@@ -37,7 +37,7 @@ module.exports = [
   // require('geowiki-module-fullscreen'),
 
   // Layer Selector
-  require('./src/layer-selector'),
+  require('geowiki-module-layer-selector'),
 
   // Load Styles from data/-Directory
   require('./src/styleLoaderFromData'),
