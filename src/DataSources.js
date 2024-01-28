@@ -14,8 +14,12 @@ module.exports = class DataSources extends EntityList {
   }
 
   resolveItem (item, url) {
-    if (!item.data) {
-      item.data = new OverpassFrontend(url, item.options)
-    }
+    return new Promise((resolve) => {
+      if (!item.data) {
+        item.data = new OverpassFrontend(url, item.options)
+      }
+
+      resolve()
+    })
   }
 }
