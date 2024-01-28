@@ -108,7 +108,7 @@ function _changeLayer (layers, options = {}) {
 
     const currentLayer = app.layers[i]
 
-    if (currentLayer.layer && layer.styleFile === currentLayer.styleFile && layer.data === currentLayer.data) {
+    if (currentLayer.layer && layer && layer.styleFile === currentLayer.styleFile && layer.data === currentLayer.data) {
       return done()
     } else if (currentLayer.layer) {
       app.setNonInteractive(true)
@@ -117,13 +117,13 @@ function _changeLayer (layers, options = {}) {
       app.setNonInteractive(false)
     }
 
+    if (!layer || !layer.styleFile) {
+      return done()
+    }
+
     currentLayer.styleFile = layer.styleFile
     currentLayer.data = layer.data
     change = true
-
-    if (!currentLayer.styleFile) {
-      return done()
-    }
 
     Promise.all([
       app.dataSources.get(currentLayer.data),
