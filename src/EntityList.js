@@ -1,7 +1,9 @@
+import Events from 'events'
 import isRelativePath from './isRelativePath'
 
-module.exports = class EntityList {
+module.exports = class EntityList extends Events {
   constructor (app, config, defaultList) {
+    super()
     this.app = app
     this.config = config
     this.defaultList = defaultList
@@ -31,6 +33,7 @@ module.exports = class EntityList {
         }
       })
 
+      this.emit('update')
       resolve(this._list)
     })
   }
@@ -57,6 +60,8 @@ module.exports = class EntityList {
             title: id,
             url: id
           }
+
+          this.emit('update')
         }
 
         const item = list[id]

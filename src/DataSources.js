@@ -11,6 +11,7 @@ const defaultList = {
 module.exports = class DataSources extends EntityList {
   constructor (app) {
     super(app, app.config.dataSources, defaultList)
+    this.on('update', () => app.emit('data-sources-update'))
   }
 
   resolveItem (item, url) {

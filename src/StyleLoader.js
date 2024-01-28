@@ -5,6 +5,7 @@ const defaultList = {}
 module.exports = class Styles extends EntityList {
   constructor (app) {
     super(app, app.config.styles, defaultList)
+    this.on('update', () => app.emit('styles-update'))
   }
 
   resolveItem (item, url) {
