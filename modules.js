@@ -37,4 +37,7 @@ module.exports = [
 
   // Load Styles from data/-Directory
   require('./src/styleLoaderFromData'),
+
+  // List files in the data directory and add them as available Stylesheet resp. data sources
+  require('./src/listDataDirectory'),
 ]
