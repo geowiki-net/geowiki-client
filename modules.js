@@ -33,8 +33,7 @@ module.exports = [
   require('geowiki-module-opening-hours'),
 
   // Add a 'Fullscreen' button to Geowiki Viewer
-  // install via 'npm install github:geowiki-net/geowiki-module-fullscreen'
-  // require('geowiki-module-fullscreen'),
+  require('geowiki-module-fullscreen'),
 
   // Layer Selector
   require('geowiki-module-layer-selector'),

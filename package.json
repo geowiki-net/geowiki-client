@@ -11,6 +11,7 @@
     "start": "http-server ./"
   },
   "dependencies": {
+    "geowiki-module-fullscreen": "github:geowiki-net/geowiki-module-fullscreen",
     "geowiki-module-layer-selector": "github:geowiki-net/geowiki-module-layer-selector",
     "js-yaml": "^4.1.0",
     "leaflet": "^1.7.1",
