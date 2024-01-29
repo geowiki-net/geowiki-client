@@ -1,6 +1,7 @@
 import yaml from 'js-yaml'
 import eachOf from 'async/eachOf'
 import LeafletGeowiki from 'leaflet-geowiki/minimal'
+import LeafletGeowikiLayer from './LeafletGeowikiLayer'
 import App from './App'
 
 module.exports = {
@@ -29,8 +30,8 @@ function appInit (_app, callback) {
     },
 
     stringify (v) {
-      return v.map(layer => {
-        return layer.styleFile && layer.data ? layer.styleFile + ':' + layer.data : ''
+      return v.map(p => {
+        return p.styleFile && p.data ? p.styleFile + ':' + p.data : ''
       }).filter(v => v).join(',')
     }
   }
@@ -53,7 +54,7 @@ function appInit (_app, callback) {
   app.on('state-get', state => {
     // TODO: might still return an old set of layers
     state.layers = app.layers.map(l => {
-      return { data: l.data, styleFile: l.styleFile }
+      return l.parameters ? {...l.parameters} : null
     })
   })
 
@@ -68,110 +69,50 @@ function appInit (_app, callback) {
   callback()
 }
 
-function changeLayers (layers, options = {}) {
+function changeLayers (layerParameters, options = {}) {
   if (timeout) {
     global.clearTimeout(timeout)
   }
 
-  timeout = global.setTimeout(() => _changeLayer(layers, options), 0)
+  timeout = global.setTimeout(() => _changeLayer(layerParameters, options), 0)
 }
 
-function _changeLayer (layers, options = {}) {
+function _changeLayer (layerParameters, options = {}) {
   let change = false
-  if (typeof layers === 'string') {
-    layers = app.state.parameters.layers.parse(layers)
+  if (typeof layerParameters === 'string') {
+    layerParameters = app.state.parameters.layers.parse(layerParameters)
   }
 
   if (!app.layers) {
     app.layers = []
   }
 
-  if (layers === null) {
-    layers = app.layers
+  if (layerParameters === null) {
+    layerParameters = app.layers.map(l => l.parameters)
   }
 
-  for (let i = layers.length; i < app.layers.length; i++) {
-    app.setNonInteractive(true)
-    if (app.layers[i] && app.layers[i].layer) {
-      app.layers[i].layer.remove()
-      delete app.layers[i]
-    }
-    app.setNonInteractive(false)
-
+  for (let i = layerParameters.length; i < app.layers.length; i++) {
+    app.layers[i].hide()
     change = true
   }
 
-  eachOf(layers, (layer, i, done) => {
+  eachOf(layerParameters, (layerParameter, i, done) => {
     if (!app.layers[i]) {
-      app.layers[i] = {}
+      app.layers[i] = new LeafletGeowikiLayer(app)
     }
 
-    const currentLayer = app.layers[i]
-
-    if (currentLayer.layer && layer && layer.styleFile === currentLayer.styleFile && layer.data === currentLayer.data) {
-      return done()
-    } else if (currentLayer.layer) {
-      app.setNonInteractive(true)
-      currentLayer.layer.remove()
-      currentLayer.layer = null
-      app.setNonInteractive(false)
-    }
-
-    if (!layer || !layer.styleFile) {
-      return done()
-    }
-
-    currentLayer.styleFile = layer.styleFile
-    currentLayer.data = layer.data
-    change = true
-
-    Promise.all([
-      app.dataSources.get(currentLayer.data),
-      app.styleLoader.get(currentLayer.styleFile)
-    ]).then(([data, style]) => {
-      currentLayer.data = data.id
-
-      app.emit('style-load', style.data)
-
-      style = yaml.load(style.data)
-
-      // a layer has been added in the meantime
-      if (currentLayer.layer) {
-        app.setNonInteractive(true)
-        currentLayer.layer.remove()
-        app.setNonInteractive(false)
+    app.layers[i].change(layerParameter, (err, _change) => {
+      if (_change) {
+        change = true
       }
 
-      let layer = new LeafletGeowiki({
-        overpassFrontend: data.data,
-        style
-      })
-      currentLayer.layer = layer
-
-      app.setNonInteractive(true)
-      if (app.map) {
-        layer.addTo(app.map)
-      }
-      app.setNonInteractive(false)
-
-      layer.on('load', () => app.emit('layer-load', app.layer))
-
-      layer.on('error', error => global.alert(error))
-
-      done()
-    })
-    .catch(error => {
-      if (!error.errors) {
-        global.alert(error.message)
-      } else if (error.errors.length) {
-        global.alert(error.errors[0].message)
-      } else {
-        global.alert('Style file not found')
-      }
-
-      done()
+      done(err)
     })
   }, (err) => {
+    if (err) {
+      global.alert(err.message)
+    }
+
     if (change) {
       app.updateLink()
       app.emit('layers-update')
