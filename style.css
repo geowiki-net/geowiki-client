@@ -5,3 +5,8 @@
   right: 0;
   bottom: 0;
 }
+
+/* actionZoomOnData */
+.action.disabled {
+  color: grey;
+}

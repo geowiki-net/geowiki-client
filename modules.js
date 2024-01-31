@@ -40,4 +40,7 @@ module.exports = [
 
   // List files in the data directory and add them as available Stylesheet resp. data sources
   require('./src/listDataDirectory'),
+
+  // Actions in Layer Selector
+  require('./src/actionZoomOnData.js'),
 ]
