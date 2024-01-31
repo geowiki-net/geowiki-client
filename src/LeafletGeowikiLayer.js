@@ -37,6 +37,8 @@ module.exports = class LeafletGeowikiLayer extends Events {
     ]).then(([data, style]) => {
       this.parameters.data = data.id
 
+      this.overpassFrontend = data.data
+
       this.app.emit('style-load', style.data)
 
       style = yaml.load(style.data)
