@@ -20,6 +20,7 @@ module.exports = class LeafletGeowikiLayer extends Events {
 
     if (this.layer) {
       app.setNonInteractive(true)
+      this.emit('layer-hide', this.layer)
       this.layer.remove()
       this.layer = null
       app.setNonInteractive(false)
@@ -64,6 +65,7 @@ module.exports = class LeafletGeowikiLayer extends Events {
       this.layer.on('load', () => this.app.emit('layer-load', this.layer))
 
       this.layer.on('error', error => global.alert(error))
+      this.emit('layer-show', this.layer)
 
       callback(null, true)
     })
@@ -73,6 +75,7 @@ module.exports = class LeafletGeowikiLayer extends Events {
    */
   hide () {
     this.app.setNonInteractive(true)
+    this.emit('layer-hide', this.layer)
     this.layer.remove()
     this.layer = null
     this.parameters = null
