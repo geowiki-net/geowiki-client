@@ -2,7 +2,23 @@ import Events from 'events'
 import yaml from 'js-yaml'
 import LeafletGeowiki from 'leaflet-geowiki/minimal'
 
-module.exports = class LeafletGeowikiLayer extends Events {
+/**
+ * The parameters of a layer
+ * @typedef LeafletGeowikiLayer#parameters
+ * @property {string} parameters.styleFile The id of the style file
+ * @property {string} parameters.data The id of the data source
+ */
+
+/**
+ * handles one geowiki layer
+ * @property {LeafletGeowiki} layer The leaflet-geowiki layer
+ * @property {LeafletGeowikiLayer#parameters} parameters The current parameters
+ */
+class LeafletGeowikiLayer extends Events {
+  /**
+   * Constructor
+   * @param {App} app
+   */
   constructor (app) {
     super()
 
@@ -11,7 +27,9 @@ module.exports = class LeafletGeowikiLayer extends Events {
   }
 
   /**
-   * @returns boolean true if layer parameters changed
+   * Change the layer according to the passed paramters
+   * @param {LeafletGeowiki#parameters} parameters new parameters
+   * @param {function} callback if successful, the value of the callback will be true, if the layer parameters had changed.
    */
   change (parameters, callback) {
     if (this.layer && parameters && parameters.styleFile === this.parameters.styleFile && parameters.data === this.parameters.data) {
@@ -19,11 +37,11 @@ module.exports = class LeafletGeowikiLayer extends Events {
     }
 
     if (this.layer) {
-      app.setNonInteractive(true)
+      this.app.setNonInteractive(true)
       this.emit('layer-hide', this.layer)
       this.layer.remove()
       this.layer = null
-      app.setNonInteractive(false)
+      this.app.setNonInteractive(false)
     }
 
     if (!parameters || !parameters.styleFile) {
@@ -72,6 +90,7 @@ module.exports = class LeafletGeowikiLayer extends Events {
   }
 
   /**
+   * hide this layer
    */
   hide () {
     this.app.setNonInteractive(true)
@@ -82,3 +101,5 @@ module.exports = class LeafletGeowikiLayer extends Events {
     this.app.setNonInteractive(false)
   }
 }
+
+module.exports = LeafletGeowikiLayer
