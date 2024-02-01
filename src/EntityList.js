@@ -70,27 +70,7 @@ class EntityList extends Events {
    */
   get (id) {
     return new Promise((resolve, reject) => {
-      this.list().then(list => {
-        if (!id) {
-          if (!Object.keys(list).length) {
-            return reject(new Error('no entities defined'))
-          }
-
-          id = Object.keys(list)[0]
-        }
-
-        if (!(id in list)) { // TODO: maybe need to allow additional data sources
-          list[id] = {
-            id,
-            title: id,
-            url: id
-          }
-
-          this.emit('update')
-        }
-
-        const item = list[id]
-
+      this._find(id).then(item => {
         if (!item.data) {
           if (item.loader) {
             item.loader()
@@ -110,7 +90,33 @@ class EntityList extends Events {
           resolve(item)
         }
       })
-      .catch(err => reject(err))
+        .catch(err => reject(err))
+    })
+  }
+
+  _find (id) {
+    return new Promise((resolve, reject) => {
+      this.list().then(list => {
+        if (!id) {
+          if (!Object.keys(list).length) {
+            return reject(new Error('no entities defined'))
+          }
+
+          id = Object.keys(list)[0]
+        }
+
+        if (id in list) {
+          return resolve(list[id])
+        }
+
+        list[id] = {
+          id,
+          title: id,
+          url: id
+        }
+
+        resolve(list[id])
+      })
     })
   }
 }
