@@ -12,11 +12,12 @@ module.exports = class EntityList extends Events {
 
   /**
    * list all available data source
+   * @param [boolean] refresh - if true, the cache will be rebuilt
    * @returns Promise will resolve to a list of data source
    */
-  list () {
+  list (refresh = false) {
     return new Promise((resolve, reject) => {
-      if (this._list) {
+      if (this._list && !refresh) {
         return resolve(this._list)
       }
 

@@ -7,6 +7,10 @@ module.exports = class Styles extends EntityList {
     super(app, app.config.styles, defaultList)
     this.on('update', () => app.emit('styles-update'))
     this.on('list-entities', promises => app.emit('list-styles', promises))
+
+    app.on('refresh', () => {
+      this.list(true)
+    })
   }
 
   resolveItem (item, url) {
