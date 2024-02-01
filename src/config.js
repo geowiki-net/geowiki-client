@@ -27,10 +27,9 @@ function appInit (app, callback) {
     })
     .then(body => {
       const _config = yaml.load(body)
-      const defaultState = { ...app.config.defaultState, ...(_config.defaultState ?? {}) }
 
       app.config = { ...app.config, ..._config }
-      app.options = { ...defaultState, ...app.state.parse() }
+      app.config.defaultState = { ...app.config.defaultState, ...(_config.defaultState ?? {}) }
 
       global.setTimeout(() => callback(), 0)
     })

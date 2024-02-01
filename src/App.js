@@ -24,6 +24,8 @@ class App extends Events {
     state.on('get', state => this.emit('state-get', state))
     state.on('apply', state => this.emit('state-apply', state))
 
+    this.options = { ...this.config.defaultState, ...this.state.parse() }
+
     this.emit('init')
     state.init()
 
