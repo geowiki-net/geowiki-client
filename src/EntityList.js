@@ -109,13 +109,30 @@ class EntityList extends Events {
           return resolve(list[id])
         }
 
-        list[id] = {
-          id,
-          title: id,
-          url: id
-        }
+        const promises = []
+        /**
+         * find entity with the specified ID
+         * @event EntityList#get-entity
+         * @param {string} id - id of the entity we are looking for
+         * @param {Promise[]} promises - if the module might return a valid data source for the specified id, then push a promise to this array. Only the first promise to resolve will be used.
+         */
+        this.emit('get-entity', id, promises)
 
-        resolve(list[id])
+        Promise.any(promises)
+          .then(item => {
+            list[id] = item
+
+            resolve(item)
+          })
+          .catch(() => { // no entity? add URL from id
+            list[id] = {
+              id,
+              title: id,
+              url: id
+            }
+
+            resolve(list[id])
+          })
       })
     })
   }
