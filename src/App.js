@@ -2,6 +2,10 @@ import Events from 'events'
 import state from './state'
 import initModules from 'leaflet-geowiki/src/initModules'
 
+/**
+ * main Geowiki application
+ * @fires App#init
+ */
 class App extends Events {
   constructor () {
     super()
@@ -27,6 +31,11 @@ class App extends Events {
     this.options = { ...this.config.defaultState, ...this.state.parse() }
 
     const promises = []
+    /**
+     * After loading all modules, the 'init' event is emitted.
+     * @event App#init
+     * @param {Promises[]} promises - if your init function needs to run async, you may add a promise. After all promises resolved, the execution continues.
+     */
     this.emit('init', promises)
     state.init(promises)
 
