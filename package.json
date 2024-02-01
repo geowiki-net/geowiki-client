@@ -5,6 +5,7 @@
   "scripts": {
     "build-translations": "modulekit-lang-build-dist",
     "build": "browserify -p esmify -g browserify-css src/main.js -o dist/map.js",
+    "doc": "jsdoc -d doc/ src/*.js",
     "prepare": "npm run build && npm run build-translations",
     "lint": "standard --fix src/*.js",
     "watch": "watchify -p esmify -g browserify-css -d src/main.js -o dist/map.js -v",
@@ -29,6 +30,7 @@
     "browserify": "^16.5.2",
     "esmify": "^2.1.1",
     "http-server": "^14.1.1",
+    "jsdoc": "^4.0.2",
     "query-string": "^6.14.1",
     "request": "^2.88.2",
     "sheet-router": "^4.2.3",
