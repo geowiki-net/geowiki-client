@@ -14,6 +14,7 @@
   "dependencies": {
     "geowiki-module-fullscreen": "github:geowiki-net/geowiki-module-fullscreen",
     "geowiki-module-layer-selector": "github:geowiki-net/geowiki-module-layer-selector#layers-restructure",
+    "geowiki-module-upload-file": "github:geowiki-net/geowiki-module-upload-file",
     "js-yaml": "^4.1.0",
     "leaflet": "^1.7.1",
     "leaflet-geowiki": "github:geowiki-net/leaflet-geowiki#main",

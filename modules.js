@@ -43,4 +43,7 @@ module.exports = [
 
   // Actions in Layer Selector
   require('./src/actionZoomOnData.js'),
+
+  // Enable the upload of Styles and Data Sources
+  require('geowiki-module-upload-file'),
 ]
