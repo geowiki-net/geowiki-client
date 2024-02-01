@@ -6,8 +6,14 @@ module.exports = {
   appInit
 }
 
-function appInit (app, callback) {
-  modulekitLang.set(app.options.lang, {}, callback)
+function appInit (app) {
+  app.on('init', promises => {
+    promises.push(new Promise((resolve, reject) => {
+      modulekitLang.set(app.options.lang, {}, (err) => {
+        err ? reject(err) : resolve()
+      })
+    }))
+  })
 
   app.on('state-apply', state => {
     if (state.lang && state.lang !== app.options.lang) {

@@ -26,10 +26,16 @@ class App extends Events {
 
     this.options = { ...this.config.defaultState, ...this.state.parse() }
 
-    this.emit('init')
-    state.init()
+    const promises = []
+    this.emit('init', promises)
+    state.init(promises)
 
-    state.apply(this.options)
+    Promise.all(promises).then(() => {
+      state.apply(this.options)
+    })
+    .catch(err => {
+      global.alert(err.message)
+    })
   }
 
   stateApply (s) {
