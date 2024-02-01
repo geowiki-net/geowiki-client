@@ -3,10 +3,10 @@ import isRelativePath from './isRelativePath'
 
 /**
  * @typedef EntityList#file
- * @property {string} id ID of the file
- * @property {string} [title] title of the file
- * @property {string} [url] URL of the file (if any)
- * @property {Promise.<string>} [loader] promise which will resolve to an URL
+ * @property {string} id ID of the file.
+ * @property {string} [title] title of the file.
+ * @property {string} [url] URL of the file (if any).
+ * @property {Promise.<string>} [loader] promise, which will resolve to an URL.
  */
 
 /**
@@ -114,7 +114,7 @@ class EntityList extends Events {
          * find entity with the specified ID
          * @event EntityList#get-entity
          * @param {string} id - id of the entity we are looking for
-         * @param {Promise[]} promises - if the module might return a valid data source for the specified id, then push a promise to this array. Only the first promise to resolve will be used.
+         * @param {Promise[]} promises - if the module might return a valid entity list for the specified id, then push a promise to this array. Only the first promise to resolve will be used.
          */
         this.emit('get-entity', id, promises)
 
