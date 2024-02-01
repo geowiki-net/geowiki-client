@@ -1,7 +1,18 @@
 import Events from 'events'
 import isRelativePath from './isRelativePath'
 
-module.exports = class EntityList extends Events {
+/**
+ * @typedef EntityList#file
+ * @property {string} id ID of the file
+ * @property {string} [title] title of the file
+ * @property {string} [url] URL of the file (if any)
+ * @property {Promise.<string>} [loader] promise which will resolve to an URL
+ */
+
+/**
+ * base class for lists of entities (e.g. data sources, stylesheets, ...)
+ */
+class EntityList extends Events {
   constructor (app, config, defaultList) {
     super()
     this.app = app
@@ -13,7 +24,7 @@ module.exports = class EntityList extends Events {
   /**
    * list all available data source
    * @param [boolean] refresh - if true, the cache will be rebuilt
-   * @returns Promise will resolve to a list of data source
+   * @returns {Promise.<EntityList#file[]>} Promise will resolve to a list of entities
    */
   list (refresh = false) {
     return new Promise((resolve, reject) => {
@@ -54,8 +65,8 @@ module.exports = class EntityList extends Events {
 
   /**
    * get the datasource with the specified ID
-   * @param string [id] the id of the data source. if null, the default (first in list) data source will be returned. if the data source is not loaded, a new data source with the URL derived from the id will be created.
-   * @returns Promise will resolve to an OverpassFrontend object
+   * @param {string} [id] the id of the data source. if null, the default (first in list) data source will be returned. if the data source is not loaded, a new data source with the URL derived from the id will be created.
+   * @returns {Promise.<EntityList#file>} a promise, which will resolve to a file descriptor.
    */
   get (id) {
     return new Promise((resolve, reject) => {
@@ -103,3 +114,5 @@ module.exports = class EntityList extends Events {
     })
   }
 }
+
+module.exports = EntityList
