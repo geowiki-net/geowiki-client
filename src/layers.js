@@ -54,7 +54,7 @@ function appInit (_app, callback) {
   app.on('state-get', state => {
     // TODO: might still return an old set of layers
     state.layers = app.layers.map(l => {
-      return l.parameters ? {...l.parameters} : null
+      return l.parameters ? { ...l.parameters } : null
     })
   })
 

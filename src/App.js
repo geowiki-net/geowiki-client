@@ -42,9 +42,9 @@ class App extends Events {
     Promise.all(promises).then(() => {
       state.apply(this.options)
     })
-    .catch(err => {
-      global.alert(err.message)
-    })
+      .catch(err => {
+        global.alert(err.message)
+      })
   }
 
   stateApply (s) {

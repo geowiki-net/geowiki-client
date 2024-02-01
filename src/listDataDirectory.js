@@ -13,7 +13,7 @@ module.exports = {
               }
 
               return {
-                id: id,
+                id,
                 url: id
               }
             })
@@ -36,7 +36,7 @@ module.exports = {
               }
 
               return {
-                id: id,
+                id,
                 url: id
               }
             })

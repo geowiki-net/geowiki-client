@@ -30,7 +30,7 @@ module.exports = class LeafletGeowikiLayer extends Events {
       return callback(null, false)
     }
 
-    this.parameters = {...parameters}
+    this.parameters = { ...parameters }
 
     Promise.all([
       this.app.dataSources.get(parameters.data),

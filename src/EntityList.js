@@ -34,7 +34,7 @@ class EntityList extends Events {
 
       this._list = this.defaultList
       if (this.config) {
-        this._list = this.config.list ?? defaultList
+        this._list = this.config.list ?? this.defaultList
       }
 
       Object.entries(this._list).forEach(([id, item]) => {
