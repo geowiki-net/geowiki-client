@@ -80,9 +80,20 @@ module.exports = class EntityList extends Events {
         const item = list[id]
 
         if (!item.data) {
-          const url = (isRelativePath(item.url) ? this.app.config.dataDirectory + '/' : '') + item.url
-          this.resolveItem(item, url)
-            .then(() => resolve(item))
+          if (item.loader) {
+            item.loader()
+              .then(url => {
+                this.resolveItem(item, url).then(() => resolve(item))
+              })
+              .catch(err => {
+                global.alert(err.message)
+              })
+          } else {
+            const url = (isRelativePath(item.url) ? this.app.config.dataDirectory + '/' : '') + item.url
+
+            this.resolveItem(item, url)
+              .then(() => resolve(item))
+          }
         } else {
           resolve(item)
         }
