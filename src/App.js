@@ -64,6 +64,18 @@ class App extends Events {
   setNonInteractive (value) {
     this.interactive = !value
   }
+
+  /**
+   * refresh the display of UI elements
+   * @fires App#refresh
+   */
+  refresh () {
+    /**
+     * UI elements can listen to this event. If it fires, they are requested to update their state.
+     * @event App#refresh
+     */
+    this.emit('refresh')
+  }
 }
 
 App.modules = []
