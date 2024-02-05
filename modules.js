@@ -46,4 +46,7 @@ module.exports = [
 
   // Enable the upload of Styles and Data Sources
   require('geowiki-module-upload-file'),
+
+  // Add a download icon to the layer actions
+  require('geowiki-module-download-features'),
 ]

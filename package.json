@@ -12,6 +12,7 @@
     "start": "http-server ./"
   },
   "dependencies": {
+    "geowiki-module-download-features": "github:geowiki-net/geowiki-module-download-features",
     "geowiki-module-fullscreen": "github:geowiki-net/geowiki-module-fullscreen",
     "geowiki-module-layer-selector": "github:geowiki-net/geowiki-module-layer-selector#layers-restructure",
     "geowiki-module-upload-file": "github:geowiki-net/geowiki-module-upload-file",
