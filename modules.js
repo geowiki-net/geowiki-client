@@ -38,6 +38,9 @@ module.exports = [
   // Load Styles from data/-Directory
   require('./src/styleLoaderFromData'),
 
+  // Show tile-based basemaps and overlays
+  require('./src/mapLayers'),
+
   // List files in the data directory and add them as available Stylesheet resp. data sources
   require('./src/listDataDirectory'),
 

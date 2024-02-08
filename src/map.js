@@ -17,13 +17,6 @@ function appInit (app, callback) {
 
   app.map = L.map('map', { maxZoom: app.config.maxZoom })
 
-  // Show OSM map background
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxNativeZoom: 19,
-    maxZoom: app.config.maxZoom,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-  }).addTo(app.map)
-
   app.map.attributionControl.setPrefix('<a target="_blank" href="' + encodeURI(app.config.app.url) + '">' + app.config.app.name + '</a>')
 
   app.map.on('moveend', (e) => {
