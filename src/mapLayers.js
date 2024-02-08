@@ -34,7 +34,6 @@ module.exports = {
     })
 
     L.control.layers(layers).addTo(app.map)
-    Object.values(layers)[0].addTo(app.map)
 
     app.map.on('baselayerchange', function (e) {
       currentMapLayer = e.layer
@@ -56,6 +55,8 @@ module.exports = {
         if (current.length) {
           current[0].layer.addTo(app.map)
         }
+      } else if (!currentMapLayer) {
+        mapLayers[0].layer.addTo(app.map)
       }
     })
   }
