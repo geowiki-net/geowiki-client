@@ -41,7 +41,6 @@ class State extends Events {
      */
     this.emit('get', state)
 
-    this.current = state
     return state
   }
 
