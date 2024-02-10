@@ -20,6 +20,7 @@ let interactive = true
 /**
  * @typedef mapLayerEntry
  * @property {string} id
+ * @property {boolean} shown
  * @property {mapLayer} def
  * @property {Leaflet} layer
  */
@@ -58,6 +59,7 @@ module.exports = {
     mapLayers.selectBasemap = (basemap, interactive=true) => {
       if (mapLayers.currentBasemap) {
         app.map.removeLayer(mapLayers.currentBasemap.layer)
+        mapLayers.currentBasemap.shown = false
         mapLayers.currentBasemap = null
       }
 
@@ -104,8 +106,16 @@ module.exports = {
     })
 
     app.map.on('baselayerchange', function (e) {
-      const selected = mapLayers.basemaps.filter(({ layer }) => layer === e.layer)
+      const selected = mapLayers.basemaps.filter(entry => {
+        entry.shown = false
+        return entry.layer === e.layer
+      })
+
       mapLayers.currentBasemap = selected.length ? selected[0] : null
+      if (mapLayers.currentBasemap) {
+        mapLayers.currentBasemap.shown = true
+      }
+
       if (interactive && app.interactive) {
         app.updateLink()
       }
