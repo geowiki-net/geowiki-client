@@ -11,6 +11,7 @@ let interactive = true
  * @property {mapLayerEntry} [currentBasemap] currently selected basemap.
  * @property {function} addBasemap Add a basemap. Expects a {mapLayer}.
  * @property {string|null} selectBasemap Select the basemap map layer with the id / mapLayer definition / leaflet layer.
+ * @property {Object.<function>} layerTypes Hash array of available layer types. By default the 'tms' type is defined. The functions convert a map definition (mapLayer) into a leaflet layer.
  */
 
 /**
@@ -25,6 +26,7 @@ let interactive = true
  * @typedef mapLayer
  * @property {string} id ID of the map layer (Tile Map Service)
  * @property {string} name Human name of the map layer
+ * @property {string} [type=tms] Type of the layer.
  * @property {string} url URL of the layer, e.g. https://tile.openstreetmap.org/{z}/{x}/{y}.png
  * @property {object} options Additional options, e.g. attribution, maxNativeZoom, subdomains, ...
  */
@@ -36,15 +38,7 @@ module.exports = {
     app.mapLayers = mapLayers
 
     mapLayers.addBasemap = (def) => {
-      const options = { ...def.options }
-      if (!('maxZoom' in options)) {
-        options.maxZoom = app.config.maxZoom
-      }
-
-      const layer = L.tileLayer(
-        def.url,
-        options
-      )
+      const layer = mapLayers.layerTypes[def.type ?? 'tms'](def)
 
       layers[def.name] = layer
       mapLayers.basemaps.push({ id: def.id, def, layer })
@@ -58,6 +52,20 @@ module.exports = {
       const current = mapLayers.basemaps.filter(({ id }) => id === basemap)
       if (current.length) {
         current[0].layer.addTo(app.map)
+      }
+    }
+
+    mapLayers.layerTypes = {
+      tms: (def) => {
+        const options = { ...def.options }
+        if (!('maxZoom' in options)) {
+          options.maxZoom = app.config.maxZoom
+        }
+
+        return L.tileLayer(
+          def.url,
+          options
+        )
       }
     }
 

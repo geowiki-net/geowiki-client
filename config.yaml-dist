@@ -17,6 +17,7 @@ map:
 
 basemaps:
 - id: osm
+  type: tms
   name: 'OpenStreetMap Mapnik'
   url: https://tile.openstreetmap.org/{z}/{x}/{y}.png
   options:
