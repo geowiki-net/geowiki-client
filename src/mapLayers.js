@@ -40,6 +40,8 @@ module.exports = {
   appInit (app) {
     app.mapLayers = mapLayers
 
+    mapLayers.control = L.control.layers({}, {})
+
     mapLayers.addBasemap = (def) => {
       const type = def.type ?? 'tms'
 
@@ -50,6 +52,7 @@ module.exports = {
       const layer = mapLayers.layerTypes[type](def)
 
       mapLayers.basemaps.push({ id: def.id, def, layer })
+      mapLayers._refreshControl()
     }
 
     mapLayers.selectBasemap = (basemap, interactive=true) => {
@@ -97,7 +100,6 @@ module.exports = {
         mapLayers.addBasemap(def)
       })
 
-      mapLayers.control = L.control.layers({}, {})
       mapLayers._refreshControl()
     })
 
