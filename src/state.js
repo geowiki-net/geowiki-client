@@ -2,12 +2,22 @@ import Events from 'events'
 import queryString from 'query-string'
 import hash from 'sheet-router/hash'
 
+/**
+ * The application state interface.
+ * @property {object} current the current state of the App.
+ * @property {Object.<State#parameters>} custom parameter formatter functions. The key hash matches the parameter key.
+ */
+
 class State extends Events {
   constructor () {
     super()
     this.current = {}
 
-    // define parse and stringify for specific parameters
+    /**
+     * @typedef State#parameters
+     * @property {function} stringify A function which stringifies the value (1st parameter).
+     * @property {function} parse A function which parses the value (1st parameter).
+     */
     this.parameters = {}
   }
 
@@ -17,10 +27,18 @@ class State extends Events {
     })
   }
 
+  /**
+   * Call all modules to get the current state of the App.
+   * @fires App#state-get
+   */
   get () {
     const state = {}
 
-    // other modules
+    /**
+     * All modules which add to the state shall listen to 'state-get'
+     * @event App#state-get
+     * @param {object} state Add the modules' state to this hash.
+     */
     this.emit('get', state)
 
     this.current = state
@@ -32,7 +50,7 @@ class State extends Events {
    * @param {object} state - Overwrite parameters to the new value.
    * @param {object} [options={}] - Additional options
    * @param {string|null} [options.update=null] - Update to state in the browser history, either with 'push' or 'replace'. On null, the history will not be updated.
-   * @emits State#apply
+   * @emits App#state-apply
    */
   apply (state = null, options = {}) {
     this.previous = { ...this.current }
@@ -48,8 +66,14 @@ class State extends Events {
       this.updateLink(options.update === 'push')
     }
 
-    // other modules
-    this.emit('apply', state)
+    /**
+     * All modules which state needs to change have to listen to 'state-apply'
+     * @event App#state-apply
+     * @param {object} state Read the new state from this object.
+     */
+    global.setTimeout(() => {
+      this.emit('apply', state)
+    }, 0)
 
     return state
   }
