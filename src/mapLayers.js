@@ -96,7 +96,7 @@ module.exports = {
     app.map.on('baselayerchange', function (e) {
       const selected = mapLayers.basemaps.filter(({ layer }) => layer === e.layer)
       mapLayers.currentBasemap = selected.length ? selected[0] : null
-      if (interactive) {
+      if (interactive && app.interactive) {
         app.updateLink()
       }
     })
@@ -109,7 +109,7 @@ module.exports = {
       interactive = false
       if (state.basemap) {
         mapLayers.selectBasemap(state.basemap, false)
-      } else if (!currentMapLayer) {
+      } else if (!mapLayers.currentBasemap) {
         mapLayers.basemaps[0].layer.addTo(app.map)
       }
       interactive = true
