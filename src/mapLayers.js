@@ -12,6 +12,7 @@ let interactive = true
  * @property {function} addBasemap Add a basemap. Expects a {mapLayer}.
  * @property {string|null} selectBasemap Select the basemap map layer with the id / mapLayer definition / leaflet layer.
  * @property {Object.<function>} layerTypes Hash array of available layer types. By default the 'tms' type is defined. The functions convert a map definition (mapLayer) into a leaflet layer.
+ * @property {L.control.layers} control the layer control - only visible when >1 basemap defined.
  */
 
 /**
@@ -85,7 +86,11 @@ module.exports = {
         layers[def.name] = layer
       })
 
-      L.control.layers(layers).addTo(app.map)
+      mapLayers.control = L.control.layers(layers, {})
+
+      if (Object.keys(layers).length > 1) {
+        mapLayers.control.addTo(app.map)
+      }
     })
 
     app.map.on('baselayerchange', function (e) {
