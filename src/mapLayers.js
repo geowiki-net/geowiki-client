@@ -12,7 +12,7 @@ let interactive = true
  * @property {mapLayerEntry[]} basemaps List of available basemaps.
  * @property {mapLayerEntry} [currentBasemap] currently selected basemap.
  * @property {function} addBasemap Add a basemap. Expects a {mapLayer}.
- * @property {string|null} selectBasemap Select the basemap map layer with the id / mapLayer definition / leaflet layer.
+ * @property {function} selectBasemap Select the basemap map layer with the specified id (or select none when null is passed).
  * @property {Object.<function>} layerTypes Hash array of available layer types. By default the 'tms' type is defined. The functions convert a map definition (mapLayer) into a leaflet layer.
  * @property {L.control.layers} control the layer control - only visible when >1 basemap defined.
  */
