@@ -1,5 +1,3 @@
-import modulekitLang from 'modulekit-lang'
-
 const mapLayers = {
   basemaps: [],
   currentBasemap: null
@@ -14,7 +12,7 @@ let interactive = true
  * @property {function} addBasemap Add a basemap. Expects a {mapLayer}.
  * @property {function} selectBasemap Select the basemap map layer with the specified id (or select none when null is passed).
  * @property {Object.<function>} layerTypes Hash array of available layer types. By default the 'tms' type is defined. The functions convert a map definition (mapLayer) into a leaflet layer.
- * @property {L.control.layers} control the layer control - only visible when >1 basemap defined.
+ * @fires {App#mapLayers-change}
  */
 
 /**
@@ -41,8 +39,6 @@ module.exports = {
   appInit (app) {
     app.mapLayers = mapLayers
 
-    mapLayers.control = L.control.layers({}, {})
-
     mapLayers.addBasemap = (def) => {
       const type = def.type ?? 'tms'
 
@@ -53,7 +49,12 @@ module.exports = {
       const layer = mapLayers.layerTypes[type](def)
 
       mapLayers.basemaps.push({ id: def.id, def, layer })
-      mapLayers._refreshControl()
+
+      /**
+       * Emitted when basemaps or overlays are changed.
+       * @event App#mapLayers-change
+       */
+      app.emit('mapLayers-change')
     }
 
     mapLayers.selectBasemap = (basemap, interactive=true) => {
@@ -66,19 +67,6 @@ module.exports = {
       const current = mapLayers.basemaps.filter(({ id }) => id === basemap)
       if (current.length) {
         current[0].layer.addTo(app.map)
-      }
-    }
-
-    mapLayers._refreshControl = () => {
-      const layers = {}
-      mapLayers.basemaps.forEach(({ def, layer }) => {
-        mapLayers.control.removeLayer(layer)
-        const name = modulekitLang.lang(def.name)
-        mapLayers.control.addBaseLayer(layer, name)
-      })
-
-      if (Object.keys(mapLayers.basemaps).length > 1) {
-        mapLayers.control.addTo(app.map)
       }
     }
 
@@ -101,8 +89,6 @@ module.exports = {
       app.config.basemaps.forEach(def => {
         mapLayers.addBasemap(def)
       })
-
-      mapLayers._refreshControl()
     })
 
     app.map.on('baselayerchange', function (e) {
@@ -136,7 +122,5 @@ module.exports = {
       }
       interactive = true
     })
-
-    app.on('lang-change', () => mapLayers._refreshControl())
   }
 }

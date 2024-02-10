@@ -41,6 +41,9 @@ module.exports = [
   // Show tile-based basemaps and overlays
   require('./src/mapLayers'),
 
+  // Show a layer control for basemaps and overlays
+  require('./src/mapLayersControl'),
+
   // List files in the data directory and add them as available Stylesheet resp. data sources
   require('./src/listDataDirectory'),
 
