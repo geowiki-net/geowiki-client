@@ -46,7 +46,6 @@ module.exports = {
 
       const layer = mapLayers.layerTypes[type](def)
 
-      layers[def.name] = layer
       mapLayers.basemaps.push({ id: def.id, def, layer })
     }
 
@@ -86,13 +85,19 @@ module.exports = {
       return
     }
 
-    const layers = {}
-    const preferredLayer = null
-    app.config.basemaps.forEach(def => {
-      mapLayers.addBasemap(def)
-    })
+    app.on('init', () => {
+      const preferredLayer = null
+      app.config.basemaps.forEach(def => {
+        mapLayers.addBasemap(def)
+      })
 
-    L.control.layers(layers).addTo(app.map)
+      const layers = {}
+      mapLayers.basemaps.forEach(({ def, layer }) => {
+        layers[def.name] = layer
+      })
+
+      L.control.layers(layers).addTo(app.map)
+    })
 
     app.map.on('baselayerchange', function (e) {
       const selected = mapLayers.basemaps.filter(({ layer }) => layer === e.layer)
