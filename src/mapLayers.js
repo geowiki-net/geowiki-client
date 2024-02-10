@@ -38,7 +38,13 @@ module.exports = {
     app.mapLayers = mapLayers
 
     mapLayers.addBasemap = (def) => {
-      const layer = mapLayers.layerTypes[def.type ?? 'tms'](def)
+      const type = def.type ?? 'tms'
+
+      if (!(type in mapLayers.layerTypes)) {
+        return console.log(`Can't load layer '${def.id}', layer type '${type}' not defined.`)
+      }
+
+      const layer = mapLayers.layerTypes[type](def)
 
       layers[def.name] = layer
       mapLayers.basemaps.push({ id: def.id, def, layer })
