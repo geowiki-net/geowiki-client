@@ -64,6 +64,19 @@ module.exports = {
       }
     }
 
+    mapLayers._refreshControl = () => {
+      const layers = {}
+      mapLayers.basemaps.forEach(({ def, layer }) => {
+        mapLayers.control.removeLayer(layer)
+        const name = modulekitLang.lang(def.name)
+        mapLayers.control.addBaseLayer(layer, name)
+      })
+
+      if (Object.keys(mapLayers.basemaps).length > 1) {
+        mapLayers.control.addTo(app.map)
+      }
+    }
+
     mapLayers.layerTypes = {
       tms: (def) => {
         const options = { ...def.options }
@@ -84,17 +97,8 @@ module.exports = {
         mapLayers.addBasemap(def)
       })
 
-      const layers = {}
-      mapLayers.basemaps.forEach(({ def, layer }) => {
-        const name = modulekitLang.lang(def.name)
-        layers[name] = layer
-      })
-
-      mapLayers.control = L.control.layers(layers, {})
-
-      if (Object.keys(layers).length > 1) {
-        mapLayers.control.addTo(app.map)
-      }
+      mapLayers.control = L.control.layers({}, {})
+      mapLayers._refreshControl()
     })
 
     app.map.on('baselayerchange', function (e) {
@@ -120,5 +124,7 @@ module.exports = {
       }
       interactive = true
     })
+
+    app.on('lang-change', () => mapLayers._refreshControl())
   }
 }
