@@ -1,6 +1,14 @@
 const mapLayers = []
 let currentMapLayer = null
 
+/**
+ * @typedef mapLayer
+ * @property {string} id ID of the map layer (Tile Map Service)
+ * @property {string} name Human name of the map layer
+ * @property {string} url URL of the layer, e.g. https://tile.openstreetmap.org/{z}/{x}/{y}.png
+ * @property {object} options Additional options, e.g. attribution, maxNativeZoom, subdomains, ...
+ */
+
 module.exports = {
   id: 'mapLayers',
   requireModules: ['config', 'map'],
