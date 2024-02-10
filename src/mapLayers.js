@@ -55,6 +55,7 @@ module.exports = {
     mapLayers.selectBasemap = (basemap, interactive=true) => {
       if (mapLayers.currentBasemap) {
         app.map.removeLayer(mapLayers.currentBasemap.layer)
+        mapLayers.currentBasemap = null
       }
 
       const current = mapLayers.basemaps.filter(({ id }) => id === basemap)
@@ -110,8 +111,10 @@ module.exports = {
 
     app.on('state-apply', state => {
       interactive = false
-      if (state.basemap) {
-        mapLayers.selectBasemap(state.basemap, false)
+      if ('basemap' in state) {
+        if (!mapLayers.currentBasemap || state.basemap !== mapLayers.currentBasemap.id) {
+          mapLayers.selectBasemap(state.basemap, false)
+        }
       } else if (!mapLayers.currentBasemap) {
         mapLayers.basemaps[0].layer.addTo(app.map)
       }
