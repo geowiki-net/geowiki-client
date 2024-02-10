@@ -7,6 +7,7 @@ import initModules from 'leaflet-geowiki/src/initModules'
  * @fires App#init
  * @property {Leaflet} map The main map of the App.
  * @property {State} state Access to the state interface.
+ * @property {mapLayers} mapLayers Interact with the basemaps.
  */
 class App extends Events {
   constructor () {

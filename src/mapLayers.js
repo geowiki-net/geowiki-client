@@ -1,7 +1,23 @@
-const mapLayers = []
-let currentMapLayer = null
+const mapLayers = {
+  basemaps: [],
+  currentBasemap: null
+}
 
 /**
+ * @typedef mapLayers interface to the basemaps of the current map.
+ * @property {mapLayerEntry[]} basemaps List of available basemaps.
+ * @property {mapLayerEntry} [currentBasemap] currently selected basemap.
+ */
+
+/**
+ * @typedef mapLayerEntry
+ * @property {string} id
+ * @property {mapLayer} def
+ * @property {Leaflet} layer
+ */
+
+/**
+ * Definition of a map layer.
  * @typedef mapLayer
  * @property {string} id ID of the map layer (Tile Map Service)
  * @property {string} name Human name of the map layer
@@ -13,6 +29,8 @@ module.exports = {
   id: 'mapLayers',
   requireModules: ['config', 'map'],
   appInit (app) {
+    app.mapLayers = mapLayers
+
     if (!app.config.basemaps) {
       // Show OSM map background
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -38,33 +56,33 @@ module.exports = {
       )
 
       layers[def.name] = layer
-      mapLayers.push({ def, layer })
+      mapLayers.basemaps.push({ id: def.id, def, layer })
     })
 
     L.control.layers(layers).addTo(app.map)
 
     app.map.on('baselayerchange', function (e) {
-      currentMapLayer = e.layer
+      const selected = mapLayers.basemaps.filter(({ layer }) => layer === e.layer)
+      mapLayers.currentBasemap = selected.length ? selected[0] : null
       app.updateLink()
     })
 
     app.on('state-get', state => {
-      const current = mapLayers.filter(({ def, layer }) => layer === currentMapLayer)
-      state.basemap = current.length ? current[0].def.id : ''
+      state.basemap = mapLayers.currentBasemap ? mapLayers.currentBasemap.id : ''
     })
 
     app.on('state-apply', state => {
       if (state.basemap) {
-        if (currentMapLayer) {
-          app.map.removeLayer(currentMapLayer)
+        if (mapLayers.currentBasemap) {
+          app.map.removeLayer(mapLayers.currentBasemap.layer)
         }
 
-        const current = mapLayers.filter(({ def, layer }) => def.id === state.basemap)
+        const current = mapLayers.basemaps.filter(({ id }) => id === state.basemap)
         if (current.length) {
           current[0].layer.addTo(app.map)
         }
       } else if (!currentMapLayer) {
-        mapLayers[0].layer.addTo(app.map)
+        mapLayers.basemaps[0].layer.addTo(app.map)
       }
     })
   }
