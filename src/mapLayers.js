@@ -3,6 +3,8 @@ const mapLayers = {
   currentBasemap: null
 }
 
+let interactive = true
+
 /**
  * @typedef mapLayers interface to the basemaps of the current map.
  * @property {mapLayerEntry[]} basemaps List of available basemaps.
@@ -81,7 +83,9 @@ module.exports = {
     app.map.on('baselayerchange', function (e) {
       const selected = mapLayers.basemaps.filter(({ layer }) => layer === e.layer)
       mapLayers.currentBasemap = selected.length ? selected[0] : null
-      app.updateLink()
+      if (interactive) {
+        app.updateLink()
+      }
     })
 
     app.on('state-get', state => {
@@ -89,11 +93,13 @@ module.exports = {
     })
 
     app.on('state-apply', state => {
+      interactive = false
       if (state.basemap) {
         mapLayers.selectBasemap(state.basemap, false)
       } else if (!currentMapLayer) {
         mapLayers.basemaps[0].layer.addTo(app.map)
       }
+      interactive = true
     })
   }
 }
