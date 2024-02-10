@@ -7,6 +7,8 @@ const mapLayers = {
  * @typedef mapLayers interface to the basemaps of the current map.
  * @property {mapLayerEntry[]} basemaps List of available basemaps.
  * @property {mapLayerEntry} [currentBasemap] currently selected basemap.
+ * @property {function} addBasemap Add a basemap. Expects a {mapLayer}.
+ * @property {string|null} selectBasemap Select the basemap map layer with the id / mapLayer definition / leaflet layer.
  */
 
 /**
@@ -31,6 +33,32 @@ module.exports = {
   appInit (app) {
     app.mapLayers = mapLayers
 
+    mapLayers.addBasemap = (def) => {
+      const options = { ...def.options }
+      if (!('maxZoom' in options)) {
+        options.maxZoom = app.config.maxZoom
+      }
+
+      const layer = L.tileLayer(
+        def.url,
+        options
+      )
+
+      layers[def.name] = layer
+      mapLayers.basemaps.push({ id: def.id, def, layer })
+    }
+
+    mapLayers.selectBasemap = (basemap, interactive=true) => {
+      if (mapLayers.currentBasemap) {
+        app.map.removeLayer(mapLayers.currentBasemap.layer)
+      }
+
+      const current = mapLayers.basemaps.filter(({ id }) => id === basemap)
+      if (current.length) {
+        current[0].layer.addTo(app.map)
+      }
+    }
+
     if (!app.config.basemaps) {
       // Show OSM map background
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -45,18 +73,7 @@ module.exports = {
     const layers = {}
     const preferredLayer = null
     app.config.basemaps.forEach(def => {
-      const options = { ...def.options }
-      if (!('maxZoom' in options)) {
-        options.maxZoom = app.config.maxZoom
-      }
-
-      const layer = L.tileLayer(
-        def.url,
-        options
-      )
-
-      layers[def.name] = layer
-      mapLayers.basemaps.push({ id: def.id, def, layer })
+      mapLayers.addBasemap(def)
     })
 
     L.control.layers(layers).addTo(app.map)
@@ -73,14 +90,7 @@ module.exports = {
 
     app.on('state-apply', state => {
       if (state.basemap) {
-        if (mapLayers.currentBasemap) {
-          app.map.removeLayer(mapLayers.currentBasemap.layer)
-        }
-
-        const current = mapLayers.basemaps.filter(({ id }) => id === state.basemap)
-        if (current.length) {
-          current[0].layer.addTo(app.map)
-        }
+        mapLayers.selectBasemap(state.basemap, false)
       } else if (!currentMapLayer) {
         mapLayers.basemaps[0].layer.addTo(app.map)
       }
