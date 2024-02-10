@@ -4,7 +4,7 @@ let mapLayersControl
 
 module.exports = {
   id: 'mapLayersControl',
-  requireModules: ['mapLayers'],
+  requireModules: ['mapLayers', 'config', 'map', 'lang'],
   appInit (app) {
     mapLayersControl = L.control.layers({}, {})
 

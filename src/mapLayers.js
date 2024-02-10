@@ -35,7 +35,7 @@ let interactive = true
 
 module.exports = {
   id: 'mapLayers',
-  requireModules: ['config', 'map', 'lang'],
+  requireModules: ['config', 'map'],
   appInit (app) {
     app.mapLayers = mapLayers
 
