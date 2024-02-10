@@ -74,17 +74,6 @@ module.exports = {
       }
     }
 
-    if (!app.config.basemaps) {
-      // Show OSM map background
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxNativeZoom: 19,
-        maxZoom: app.config.maxZoom,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-      }).addTo(app.map)
-
-      return
-    }
-
     app.on('init', () => {
       const preferredLayer = null
       app.config.basemaps.forEach(def => {
