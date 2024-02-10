@@ -1,3 +1,5 @@
+import modulekitLang from 'modulekit-lang'
+
 const mapLayers = {
   basemaps: [],
   currentBasemap: null
@@ -26,7 +28,7 @@ let interactive = true
  * Definition of a map layer.
  * @typedef mapLayer
  * @property {string} id ID of the map layer (Tile Map Service)
- * @property {string} name Human name of the map layer
+ * @property {string|Object.<string>} name Human name of the map layer (can be translated via lang/<language>.json). The name can be an object with the language code as key and the localized name as value.
  * @property {string} [type=tms] Type of the layer.
  * @property {string} url URL of the layer, e.g. https://tile.openstreetmap.org/{z}/{x}/{y}.png
  * @property {object} options Additional options, e.g. attribution, maxNativeZoom, subdomains, ...
@@ -34,7 +36,7 @@ let interactive = true
 
 module.exports = {
   id: 'mapLayers',
-  requireModules: ['config', 'map'],
+  requireModules: ['config', 'map', 'lang'],
   appInit (app) {
     app.mapLayers = mapLayers
 
@@ -83,7 +85,8 @@ module.exports = {
 
       const layers = {}
       mapLayers.basemaps.forEach(({ def, layer }) => {
-        layers[def.name] = layer
+        const name = modulekitLang.lang(def.name)
+        layers[name] = layer
       })
 
       mapLayers.control = L.control.layers(layers, {})
