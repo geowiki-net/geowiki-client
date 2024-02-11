@@ -67,12 +67,24 @@ class StyleEditor {
     submit.value = 'Apply'
     form.appendChild(submit)
 
+    this.downloadLink = document.createElement('a')
+    this.downloadLink.innerHTML = 'Download'
+    form.appendChild(this.downloadLink)
+    this.textarea.onchange = () => this.updateDownloadLink()
+
     this.app.styleLoader.get(this.leafletGeowikiLayer.parameters.styleFile)
       .then(def => {
         this.textarea.value = def.data
+        this.updateDownloadLink()
       })
 
     this.window.content.appendChild(form)
     this.window.show()
+  }
+
+  updateDownloadLink () {
+    const file = new Blob([this.textarea.value], { type: 'application/yaml' })
+    this.downloadLink.href = URL.createObjectURL(file)
+    this.downloadLink.download = md5(this.textarea.value) + '.yaml'
   }
 }
