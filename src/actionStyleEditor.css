@@ -1,0 +1,15 @@
+.StyleEditor form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+  flex-wrap: nowrap;
+}
+.StyleEditor form textarea {
+  overflow: auto;
+  box-sizing: border-box;
+  resize: none;
+}
+.StyleEditor form .controls {
+}

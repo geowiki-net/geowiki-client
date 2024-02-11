@@ -6,6 +6,9 @@ import customStyles from './customStyles'
 module.exports = {
   id: 'actionStyleEditor',
   requireModules: ['data', 'lang', customStyles],
+  cssFiles: [
+    'src/actionStyleEditor.css'
+  ],
   appInit
 }
 
@@ -38,6 +41,7 @@ class StyleEditor {
     this.index = index
     this.leafletGeowikiLayer = leafletGeowikiLayer
     this.window = new Window({ title: 'Editor'})
+    this.window.dom.classList.add('StyleEditor')
 
     global.setTimeout(() => this.show(), 0)
   }
@@ -62,14 +66,17 @@ class StyleEditor {
     this.textarea = document.createElement('textarea')
     form.appendChild(this.textarea)
 
+    const controls = document.createElement('div')
+    form.appendChild(controls)
+
     const submit = document.createElement('input')
     submit.type = 'submit'
     submit.value = 'Apply'
-    form.appendChild(submit)
+    controls.appendChild(submit)
 
     this.downloadLink = document.createElement('a')
     this.downloadLink.innerHTML = 'Download'
-    form.appendChild(this.downloadLink)
+    controls.appendChild(this.downloadLink)
     this.textarea.onchange = () => this.updateDownloadLink()
 
     this.app.styleLoader.get(this.leafletGeowikiLayer.parameters.styleFile)
