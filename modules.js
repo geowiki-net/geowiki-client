@@ -38,6 +38,12 @@ module.exports = [
   // Load Styles from data/-Directory
   require('./src/styleLoaderFromData'),
 
+  // Load Styles from browser localStorage
+  require('./src/customStyles'),
+
+  // Add a Style Editor to the layer actions
+  require('./src/actionStyleEditor'),
+
   // Show tile-based basemaps and overlays
   require('./src/mapLayers'),
 
