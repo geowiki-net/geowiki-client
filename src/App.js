@@ -23,7 +23,19 @@ class App extends Events {
         global.alert(err.message)
       }
 
+      this.loadCssFiles()
       callback()
+    })
+  }
+
+  loadCssFiles () {
+    App.modules.forEach(m => {
+      (m.cssFiles ?? []).forEach(file => {
+        const link = document.createElement('link')
+        link.setAttribute('rel', 'stylesheet')
+        link.setAttribute('href', file)
+        document.head.appendChild(link)
+      })
     })
   }
 
