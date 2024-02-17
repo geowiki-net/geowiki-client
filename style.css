@@ -10,3 +10,39 @@
 .action.disabled {
   color: grey;
 }
+
+/* Map popups */
+.leaflet-popup-content-wrapper {
+  overflow-y: auto;
+  padding: 0 0;
+  max-height: 350px;
+}
+.leaflet-popup-content {
+  margin: 0 0;
+}
+.leaflet-popup-content .header {
+  border-bottom: 1px solid black;
+  background: #efefef;
+}
+.leaflet-popup-content .header,
+.leaflet-popup-content .content,
+.leaflet-popup-content .popup_content {
+  padding: 0.5em 1em;
+}
+.leaflet-popup-content h1 {
+  margin: 0.125em 0;
+  font-size: 1.25em;
+}
+.leaflet-popup-content .header .field--name-field-bild {
+  float: right;
+}
+.leaflet-popup-content .header .field--name-field-bild img {
+  max-height: 4em;
+  object-fit: contain;
+}
+.leaflet-popup-content .header::after {
+  content: '';
+  clear: both;
+  display: table;
+}
+/* /Map popups */
