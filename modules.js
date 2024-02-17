@@ -54,6 +54,7 @@ module.exports = [
   require('./src/listDataDirectory'),
 
   // Actions in Layer Selector
+  require('./src/actionRemoveLayer.js'),
   require('./src/actionZoomOnData.js'),
 
   // Enable the upload of Styles and Data Sources
