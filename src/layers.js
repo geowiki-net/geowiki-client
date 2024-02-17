@@ -16,6 +16,9 @@ function appInit (_app, callback) {
   app = _app
 
   LeafletGeowiki.modules = [...LeafletGeowiki.modules, ...App.modules]
+  app.leafletGeowikiLayerFactory = () => {
+    return new LeafletGeowikiLayer(app)
+  }
 
   app.state.parameters.layers = {
     parse (v) {
