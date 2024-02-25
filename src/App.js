@@ -1,5 +1,7 @@
 import Events from 'events'
 import state from './state'
+import yaml from 'js-yaml'
+import twigGet from './twigGet'
 import initModules from 'leaflet-geowiki/src/initModules'
 
 /**
@@ -43,7 +45,15 @@ class App extends Events {
     state.on('get', state => this.emit('state-get', state))
     state.on('apply', state => this.emit('state-apply', state))
 
-    this.options = { ...this.config.defaultState, ...this.state.parse() }
+    this.options = {}
+    let initState = state.parse()
+    let defaultState = this.config.defaultState
+
+    if (typeof defaultState === 'string') {
+      defaultState = yaml.load(twigGet(defaultState, { state: initState }))
+    }
+
+    initState = { ...defaultState, ...initState }
 
     const promises = []
     /**
@@ -55,7 +65,7 @@ class App extends Events {
     state.init(promises)
 
     Promise.all(promises).then(() => {
-      state.apply(this.options)
+      state.apply(initState)
     })
       .catch(err => {
         global.alert(err.message)
