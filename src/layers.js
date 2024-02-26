@@ -31,7 +31,7 @@ function appInit (_app, callback) {
 
     stringify (v) {
       return v.map(p => {
-        return p.styleFile && p.data ? p.styleFile + ':' + p.data : ''
+        return p && p.styleFile && p.data ? p.styleFile + ':' + p.data : ''
       }).filter(v => v).join(',')
     }
   }
