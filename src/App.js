@@ -50,7 +50,17 @@ class App extends Events {
     let defaultState = this.config.defaultState
 
     if (typeof defaultState === 'string') {
-      defaultState = yaml.load(twigGet(defaultState, { state: initState }))
+      try {
+        defaultState = twigGet(defaultState, { state: initState })
+      } catch (e) {
+        return global.alert(e.message)
+      }
+
+      try {
+        defaultState = yaml.load(defaultState)
+      } catch (e) {
+        return global.alert(e.message)
+      }
     }
 
     initState = { ...defaultState, ...initState }
