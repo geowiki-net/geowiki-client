@@ -9,8 +9,6 @@ module.exports = {
 }
 
 function appInit (app, callback) {
-  app.config = defaultConfig
-
   global.fetch('config.yaml', {
   })
     .then(req => {
@@ -28,7 +26,7 @@ function appInit (app, callback) {
     .then(body => {
       const _config = yaml.load(body)
 
-      app.config = { ...app.config, ..._config }
+      app.config = { ...defaultConfig, ..._config }
 
       global.setTimeout(() => callback(), 0)
     })
