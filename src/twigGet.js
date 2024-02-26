@@ -1,15 +1,27 @@
 const Twig = require('twig')
 
 const twigTemplates = {}
+defaultOptions = {
+  autoescape: true,
+  rethrow: true
+}
 
-module.exports = function twigGet (template, data, callback) {
+module.exports = function twigGet (template, data, options = {}, callback) {
   if (typeof template !== 'string') {
     return template
   }
 
+  if (typeof options === 'function') {
+    callback = options
+    options = {}
+  }
+
+  options = { ...defaultOptions, ...options }
+
   if (!(template in twigTemplates)) {
     try {
-      twigTemplates[template] = Twig.twig({ data: template, autoescape: true, rethrow: true })
+      options.data = template
+      twigTemplates[template] = Twig.twig(options)
     } catch (e) {
       const error = 'Error compiling Twig template: ' + e.message
 
