@@ -9,16 +9,22 @@ module.exports = function twigGet (template, data, callback) {
 
   if (!(template in twigTemplates)) {
     try {
-      twigTemplates[template] = Twig.twig({ data: template, rethrow: true })
+      twigTemplates[template] = Twig.twig({ data: template, autoescape: true, rethrow: true })
     } catch (e) {
-      console.error('Error compiling Twig template:', template, e.message)
-      return ''
+      const error = 'Error compiling Twig template: ' + e.message
+
+      if (callback) {
+        return callback(error)
+      } else {
+        throw new Error(error)
+      }
     }
   }
 
   if (callback) {
     twigTemplates[template].renderAsync(data)
       .then(result => callback(null, result.trim()))
+      .catch(e => callback(new Error('Error rendering Twig template: ' + e.message)))
   } else {
     return twigTemplates[template].render(data).trim()
   }
