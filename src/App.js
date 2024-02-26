@@ -16,7 +16,7 @@ class App extends Events {
     super()
 
     this.state = state
-    this.initModules(() => this.init())
+    this.initModules(() => this.getInitState())
   }
 
   initModules (callback) {
@@ -41,11 +41,7 @@ class App extends Events {
     })
   }
 
-  init () {
-    state.on('get', state => this.emit('state-get', state))
-    state.on('apply', state => this.emit('state-apply', state))
-
-    this.options = {}
+  getInitState () {
     let initState = state.parse()
     let defaultState = this.config.defaultState
 
@@ -65,6 +61,14 @@ class App extends Events {
 
     initState = { ...defaultState, ...initState }
 
+    this.init(initState)
+  }
+
+  init (initState) {
+    state.on('get', state => this.emit('state-get', state))
+    state.on('apply', state => this.emit('state-apply', state))
+
+    this.options = {}
     const promises = []
     /**
      * After loading all modules, the 'init' event is emitted.
