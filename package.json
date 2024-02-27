@@ -44,5 +44,8 @@
   "main": "src/export.js",
   "repository": "https://github.com/geowiki-net/geowiki-viewer",
   "author": "Stephan Bösch-Plepelits <skunk@xover.mud.at>",
-  "license": "GPL-3.0"
+  "license": "GPL-3.0",
+  "overrides": {
+    "babel-template": "npm:@babel/template@^7"
+  }
 }
