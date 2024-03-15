@@ -61,6 +61,10 @@ class Styles extends EntityList {
         })
     })
   }
+
+  clearCache (file) {
+    console.log(file)
+  }
 }
 
 module.exports = Styles

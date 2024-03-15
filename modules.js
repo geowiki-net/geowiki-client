@@ -44,6 +44,9 @@ module.exports = [
   // Add a Style Editor to the layer actions
   require('./src/actionStyleEditor'),
 
+  // Add a Style Editor to the layer actions
+  require('./src/actionReloadStyle'),
+
   // Show tile-based basemaps and overlays
   require('./src/mapLayers'),
 
