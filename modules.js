@@ -20,6 +20,9 @@ module.exports = [
   // Language support
   require('leaflet-geowiki/src/language'),
 
+  // Miscellaneous twig functions
+  require('leaflet-geowiki/src/twigFunctions'),
+
   // Translate tag values (with openstreetmap-tag-translations)
   require('leaflet-geowiki/src/tagTranslations'),
 
@@ -61,4 +64,7 @@ module.exports = [
 
   // Add a download icon to the layer actions
   require('geowiki-module-download-features'),
+
+  // Enable support for color functions
+  require('geowiki-module-color'),
 ]
