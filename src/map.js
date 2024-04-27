@@ -98,6 +98,7 @@ function appInit (app, callback) {
  * @param {Number} [value.maxlon] max longitude of the bounding box (instead of bounds)
  * @param {L.LatLng} [value.center] center on this coordinate
  * @param {Number} [value.zoom] in combination with center, zoom to this zoom level
+ * @param {object} [value.options] pass these object as options to flyTo/flyToBounds
  */
 function applyView (map, value) {
   if (value.minlon) {
@@ -106,12 +107,12 @@ function applyView (map, value) {
 
   if (value.bounds) {
     if (!value.bounds.isValid()) { return false }
-    map.fitBounds(value.bounds)
+    map.fitBounds(value.bounds, value.options ?? {})
     return true
   }
 
   if (value.center) {
-    map.setView(value.center, value.zoom ?? 12)
+    map.setView(value.center, value.zoom ?? (value.options ?? {}).maxZoom ?? 12, value.options ?? {})
     return true
   }
 }
