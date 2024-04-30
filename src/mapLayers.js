@@ -67,6 +67,7 @@ module.exports = {
       const current = mapLayers.basemaps.filter(layer => layer === basemap || layer.id === basemap)
       if (current.length) {
         current[0].layer.addTo(app.map)
+        mapLayers.currentBasemap = current[0]
       }
     }
 
