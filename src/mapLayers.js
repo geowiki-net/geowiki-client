@@ -10,7 +10,7 @@ let interactive = true
  * @property {mapLayerEntry[]} basemaps List of available basemaps.
  * @property {mapLayerEntry} [currentBasemap] currently selected basemap.
  * @property {function} addBasemap Add a basemap. Expects a {mapLayer}.
- * @property {function} selectBasemap Select the basemap map layer with the specified id (or select none when null is passed).
+ * @property {function} selectBasemap Select the basemap map layer with the specified id / basemap (or select none when null is passed).
  * @property {Object.<function>} layerTypes Hash array of available layer types. By default the 'tms' type is defined. The functions convert a map definition (mapLayer) into a leaflet layer.
  * @fires {App#mapLayers-change}
  */
@@ -64,7 +64,7 @@ module.exports = {
         mapLayers.currentBasemap = null
       }
 
-      const current = mapLayers.basemaps.filter(({ id }) => id === basemap)
+      const current = mapLayers.basemaps.filter(layer => layer === basemap || layer.id === basemap)
       if (current.length) {
         current[0].layer.addTo(app.map)
       }
