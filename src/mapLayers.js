@@ -111,7 +111,9 @@ module.exports = {
       state.basemap = mapLayers.currentBasemap ? mapLayers.currentBasemap.id : ''
     })
 
-    app.on('state-apply', state => {
+    app.on('state-apply', () => {
+      const state = app.state.current
+
       interactive = false
       if ('basemap' in state) {
         if (!mapLayers.currentBasemap || state.basemap !== mapLayers.currentBasemap.id) {
