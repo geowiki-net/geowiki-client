@@ -87,6 +87,19 @@ function appInit (app, callback) {
   callback()
 }
 
+/**
+ * apply the specified value to the map
+ * @param {Map} map The Leaflet Map object
+ * @param {object} value a value describing the requested view
+ * @param {L.LatLngBounds} [value.bounds] a bounding box
+ * @param {Number} [value.minlat] min latitude of the bounding box (instead of bounds)
+ * @param {Number} [value.minlon] min longitude of the bounding box (instead of bounds)
+ * @param {Number} [value.maxlat] max latitude of the bounding box (instead of bounds)
+ * @param {Number} [value.maxlon] max longitude of the bounding box (instead of bounds)
+ * @param {L.LatLng} [value.center] center on this coordinate
+ * @param {Number} [value.zoom] in combination with center, zoom to this zoom level
+ * @param {object} [value.options] pass these object as options to flyTo/flyToBounds
+ */
 function applyView (map, value) {
   if (value.minlon) {
     value.bounds = L.latLngBounds([value.minlat, value.minlon], [value.maxlat, value.maxlon])
@@ -94,12 +107,12 @@ function applyView (map, value) {
 
   if (value.bounds) {
     if (!value.bounds.isValid()) { return false }
-    map.fitBounds(value.bounds)
+    map.fitBounds(value.bounds, value.options ?? {})
     return true
   }
 
   if (value.center) {
-    map.setView(value.center, value.zoom ?? 12)
+    map.setView(value.center, value.zoom ?? (value.options ?? {}).maxZoom ?? 12, value.options ?? {})
     return true
   }
 }
