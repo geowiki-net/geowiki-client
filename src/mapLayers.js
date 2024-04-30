@@ -121,8 +121,9 @@ module.exports = {
           mapLayers.selectBasemap(state.basemap, false)
         }
       } else if (!mapLayers.currentBasemap) {
-        mapLayers.basemaps[0].layer.addTo(app.map)
+        mapLayers.selectBasemap(mapLayers.basemaps[0], false)
       }
+
       interactive = true
     })
   }
