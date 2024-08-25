@@ -1,7 +1,7 @@
 const Twig = require('twig')
 
 const twigTemplates = {}
-defaultOptions = {
+const defaultOptions = {
   autoescape: true,
   rethrow: true
 }
